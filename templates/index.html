@@ -1,0 +1,2209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Management System - LPU Campus & Hostel Portal</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="lpu-header">
+    <div class="header-container">
+      <div class="brand-badge">
+        <div class="lpu-logo-icon">LPU</div>
+        <div class="brand-text">
+          <h1>Student Management System</h1>
+          <p>Lovely Professional University • Campus & Hostel Life Portal</p>
+        </div>
+      </div>
+
+      <!-- Global Search Box -->
+      <div class="header-search-wrap">
+        <span class="header-search-icon">🔍</span>
+        <input type="text" id="global-search-input" class="header-search-box" placeholder="Search across LPU (books, meals, stores, contacts)..." autocomplete="off" oninput="handleGlobalSearch(event)" onfocus="handleGlobalSearch(event)">
+        <button id="global-search-clear" class="header-search-clear" onclick="clearGlobalSearch()">&times;</button>
+        <div id="global-search-dropdown" class="global-search-dropdown">
+          <!-- Populated via JS -->
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <!-- Dark / Light Mode Toggle Button -->
+        <button id="theme-toggle-btn" class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+          <span id="theme-icon">🌙</span> <span id="theme-text">Dark Mode</span>
+        </button>
+        <!-- Live Digital Clock -->
+        <div class="header-clock-box" id="header-clock-box" title="Live Digital Campus Clock">
+          <div class="clock-time"><span id="clock-live-time">--:--:-- PM</span></div>
+          <div class="clock-date" id="clock-live-date">---, -- ---</div>
+        </div>
+
+        <!-- Campus Calendar Button -->
+        <!-- Student Profile Domain Pill -->
+        <div class="header-student-domain" onclick="openStudentLoginModal()" title="Click to Switch Student Domain / Login">
+          <div class="student-domain-avatar" id="header-avatar-initials">SM</div>
+          <div class="student-domain-info">
+            <span class="student-domain-reg" id="header-reg-display">12204561</span>
+            <span class="student-domain-status">Active Domain</span>
+          </div>
+          <span class="domain-switch-icon">⇄</span>
+        </div>
+
+        
+        
+      </div>
+    </div>
+  </header>
+
+  <!-- Portal Body Wrapper with Left-Most Vertical Facilities Sidebar -->
+  <div class="app-layout-container">
+
+    <!-- Left-Most Vertical Facilities Navigation Sidebar -->
+    <aside class="sidebar-facilities-wrapper" aria-label="Portal Modules Sidebar">
+      <!-- Resident Profile Card -->
+      <div class="sidebar-user-card" onclick="openStudentLoginModal()" title="Private Student Domain • Click to Manage/Login">
+        <div class="sidebar-avatar">
+          <span id="sidebar-avatar-initials">SM</span>
+          <span class="avatar-status-badge" title="Online & Authenticated"></span>
+        </div>
+        <div class="sidebar-user-meta">
+          <div style="display:flex; align-items:center; gap:0.35rem;">
+            <p class="sidebar-user-name" id="sidebar-user-name">Sarthak Mishra</p>
+            <span style="font-size:0.7rem;" title="Private Authenticated Domain">🔒</span>
+          </div>
+          <p class="sidebar-user-room" id="sidebar-user-room">BH-3 • Room 412</p>
+        </div>
+      </div>
+
+      <div class="sidebar-header-box">
+        <span class="sidebar-label">HOSTEL SERVICES</span>
+        <span class="sidebar-count-pill">10 Active</span>
+      </div>
+
+      <nav class="nav-tabs" role="tablist">
+        <button class="nav-tab-btn active" role="tab" aria-selected="true" onclick="switchTab('dashboard', this)">
+          <span class="tab-icon-wrap">📊</span>
+          <span class="tab-text">Dashboard</span>
+          <span class="nav-tab-badge badge-purple">Overview</span>
+        </button>
+        <button class="nav-tab-btn" role="tab" aria-selected="false" onclick="switchTab('cleaning', this)">
+          <span class="tab-icon-wrap">🧹</span>
+          <span class="tab-text">Cleaning Service</span>
+          <span class="nav-tab-badge badge-blue">Slots</span>
+        </button>
+        <button class="nav-tab-btn" role="tab" aria-selected="false" onclick="switchTab('mess', this)">
+          <span class="tab-icon-wrap">🍲</span>
+          <span class="tab-text">Mess Menu</span>
+          <span class="nav-tab-badge badge-green">Live</span>
+        </button>
+        <button class="nav-tab-btn" role="tab" aria-selected="false" onclick="switchTab('electricity', this)">
+          <span class="tab-icon-wrap">⚡</span>
+          <span class="tab-text">Electricity & Meter</span>
+          <span class="nav-tab-badge badge-amber">Photo</span>
+        </button>
+        <button class="nav-tab-btn" role="tab" aria-selected="false" onclick="switchTab('unihospital', this)">
+          <span class="tab-icon-wrap">🏥</span>
+          <span class="tab-text">Uni-Hospital OPD</span>
+          <span class="nav-tab-badge badge-red">Doctors</span>
+        </button>
+        <a href="cafes.html" target="_blank" class="nav-tab-btn">
+          <span class="tab-icon-wrap">🍔</span>
+          <span class="tab-text">Cafes & More</span>
+          <span class="nav-tab-badge badge-purple">Dining ↗</span>
+        </a>
+        
+        <button class="nav-tab-btn" role="tab" aria-selected="false" onclick="switchTab('library', this)">
+          <span class="tab-icon-wrap">📚</span>
+          <span class="tab-text">Central Library</span>
+        </button>
+        <button class="nav-tab-btn" role="tab" aria-selected="false" onclick="switchTab('store', this)">
+          <span class="tab-icon-wrap">🏬</span>
+          <span class="tab-text">Campus Store</span>
+          <span class="nav-tab-badge badge-cyan">Stock</span>
+        </button>
+        <button class="nav-tab-btn" role="tab" aria-selected="false" onclick="switchTab('salon', this)">
+          <span class="tab-icon-wrap">💇</span>
+          <span class="tab-text">Salon & Grooming</span>
+        </button>
+        <button class="nav-tab-btn" role="tab" aria-selected="false" onclick="switchTab('todos', this)">
+          <span class="tab-icon-wrap">✅</span>
+          <span class="tab-text">Student To-Do</span>
+        </button>
+        <button class="nav-tab-btn" role="tab" aria-selected="false" onclick="switchTab('contacts', this)">
+          <span class="tab-icon-wrap">📞</span>
+          <span class="tab-text">Wardens & Contacts</span>
+          <span class="nav-tab-badge badge-red">24/7</span>
+        </button>
+        <button class="nav-tab-btn" role="tab" aria-selected="false" onclick="switchTab('feedback', this)">
+          <span class="tab-icon-wrap">⭐</span>
+          <span class="tab-text">Hostel Feedback</span>
+          <span class="nav-tab-badge badge-amber">Review</span>
+        </button>
+
+        
+
+        <a href="store.html" target="_blank" class="nav-tab-btn secondary-app-link">
+          <span class="tab-icon-wrap icon-glow-indigo">🏪</span>
+          <span class="tab-text">Dept Store Portal</span>
+          <span class="external-arrow">↗</span>
+        </a>
+
+        <a href="marketplace.html" target="_blank" class="nav-tab-btn secondary-app-link">
+          <span class="tab-icon-wrap icon-glow-orange">🏷️</span>
+          <span class="tab-text">Campus OLX</span>
+          <span class="external-arrow">↗</span>
+        </a>
+      </nav>
+
+      <!-- Sidebar Quick Info -->
+      <div class="sidebar-footer-card">
+        <div class="sidebar-status-beacon">
+          <span class="beacon-ping"></span>
+          <span class="beacon-core"></span>
+        </div>
+        <div class="sidebar-footer-text">
+          <p class="sidebar-footer-title">Hostel Caretaking Online</p>
+          <p class="sidebar-footer-sub">Emergency & Maintenance on Duty</p>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Container (Right of Sidebar) -->
+    <main class="main-wrapper">
+
+    <!-- 0. COMPREHENSIVE DASHBOARD OVERVIEW (TOP FACILITY) -->
+    <section id="dashboard-tab" class="tab-pane active" role="tabpanel">
+      <!-- Hero Welcome Banner -->
+      <div class="dashboard-welcome-hero">
+        <div style="position: relative; z-index: 2;">
+          <span style="background: rgba(234, 88, 12, 0.35); color: #fed7aa; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">
+            🎓 Private Student Domain Active
+          </span>
+          <h2 style="font-size: 1.85rem; font-weight: 800; margin: 0.6rem 0 0.3rem 0;">
+            Welcome back, <span id="dash-greeting-name">Sarthak Mishra</span>!
+          </h2>
+          <p style="opacity: 0.92; font-size: 0.95rem; max-width: 650px;">
+            Here is your live campus life summary for <strong>BH-3, Room 412</strong>. Track your room housekeeping slots, mess meals, private electricity usage, food orders, and marketplace listings.
+          </p>
+
+          <div class="dashboard-quick-stats">
+            <div class="stat-pill-card">
+              <div class="stat-pill-icon">⚡</div>
+              <div>
+                <div style="font-size: 0.78rem; opacity: 0.85;">Current Meter Load</div>
+                <div style="font-size: 1.25rem; font-weight: 800;" id="dash-stat-units">115.00 kWh</div>
+                <div style="font-size: 0.7rem; color: #fca5a5;" id="dash-stat-dues">Dues: ₹862.50 (Unpaid)</div>
+              </div>
+            </div>
+
+            <div class="stat-pill-card" onclick="switchTab('mess')" style="cursor: pointer;" title="Click to view full 7-day Mess menu">
+              <div class="stat-pill-icon" id="dash-meal-pill-icon">🍲</div>
+              <div>
+                <div style="font-size: 0.78rem; opacity: 0.85;" id="dash-meal-pill-label">Today's Next Meal</div>
+                <div style="font-size: 1.15rem; font-weight: 800;" id="dash-meal-pill-title">Lunch (11:00 AM - 2:30 PM)</div>
+                <div style="font-size: 0.7rem; color: #86efac;" id="dash-meal-pill-status">Serving Now &bull; Amritsari Chole</div>
+              </div>
+            </div>
+
+            <div class="stat-pill-card">
+              <div class="stat-pill-icon">🧹</div>
+              <div>
+                <div style="font-size: 0.78rem; opacity: 0.85;">Room Housekeeping</div>
+                <div style="font-size: 1.15rem; font-weight: 800;">Slot Confirmed</div>
+                <div style="font-size: 0.7rem; color: #cbd5e1;">Today 10:00 AM - 12:00 PM</div>
+              </div>
+            </div>
+
+            <div class="stat-pill-card">
+              <div class="stat-pill-icon">📊</div>
+              <div>
+                <div style="font-size: 0.78rem; opacity: 0.85;">Academic Attendance</div>
+                <div style="font-size: 1.25rem; font-weight: 800;">88.4%</div>
+                <div style="font-size: 0.7rem; color: #86efac;">Safe & Above 75% Criteria</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature Summaries Grid -->
+      <div class="dashboard-sections-grid">
+        <!-- 1. Room Cleaning Quick Widget -->
+        <div class="dashboard-card">
+          <div class="dashboard-card-header">
+            <h3 class="dash-card-title"><span>🧹</span> Housekeeping & Cleaning</h3>
+            <span class="badge badge-blue">Slots Active</span>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+            Keep your room sanitized. Request floor mopping, dusting, or washroom cleaning in designated slots.
+          </p>
+          <div style="background: var(--surface-alt); padding: 0.75rem; border-radius: 8px; font-size: 0.82rem; margin-bottom: 1rem;">
+            <strong>Next Housekeeping Slot:</strong> 10:00 AM - 12:00 PM<br>
+            <span style="color: var(--text-muted);">Assigned Caretaker: Ramesh Kumar (BH-3 4th Floor)</span>
+          </div>
+          <div class="dash-btn-action">
+            <button class="btn-primary" style="flex:1;" onclick="switchTab('cleaning')">Book Cleaning Slot</button>
+          </div>
+        </div>
+
+        <!-- 2. Mess Menu Quick Widget -->
+        <div class="dashboard-card">
+          <div class="dashboard-card-header">
+            <h3 class="dash-card-title"><span id="dash-mess-icon">🍲</span> Campus Mess Dining</h3>
+            <span class="badge badge-green" id="dash-mess-status-badge">Live Allocated</span>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+            Check real-time breakfast (7-9 AM), lunch (11 AM-2:30 PM), snacks (5-6 PM) & dinner (8-10 PM).
+          </p>
+          <div style="background: var(--surface-alt); padding: 0.75rem; border-radius: 8px; font-size: 0.82rem; margin-bottom: 1rem;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:0.25rem;">
+              <strong id="dash-mess-card-meal">Next Meal: Lunch</strong>
+              <span class="badge" style="background:#e0f2fe; color:#0284c7; font-size:0.75rem;" id="dash-mess-card-timings">11:00 AM - 02:30 PM</span>
+            </div>
+            <div id="dash-mess-card-items" style="color: var(--text-main); font-weight:600; margin-bottom:0.25rem;">Amritsari Chole, Jeera Rice, Poori / Bhature, Raita</div>
+            <div style="font-size:0.75rem; color: var(--text-muted);">Mess Halls 1 & 2 &bull; Monitored daily by LPU Hostel Dietician</div>
+          </div>
+          <div class="dash-btn-action">
+            <button class="btn-primary" style="flex:1;" onclick="switchTab('mess')">View 7-Day Menu</button>
+          </div>
+        </div>
+
+        <!-- 3. Electricity & Supply Breakdown Widget -->
+        <div class="dashboard-card">
+          <div class="dashboard-card-header">
+            <h3 class="dash-card-title"><span>⚡</span> Private Room Meter</h3>
+            <span class="badge badge-unpaid" id="dash-meter-status">₹862.50 Due</span>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+            Real-time breakdown of your room's power supply consumption across AC, lights, and sockets.
+          </p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; font-size: 0.8rem; margin-bottom: 0.75rem;">
+            <div style="background:var(--surface-alt); padding:0.5rem; border-radius:6px;">❄️ AC: <strong>51.75 kWh (45%)</strong></div>
+            <div style="background:var(--surface-alt); padding:0.5rem; border-radius:6px;">💡 Lights: <strong>27.60 kWh (24%)</strong></div>
+            <div style="background:var(--surface-alt); padding:0.5rem; border-radius:6px;">🔌 Heavy: <strong>24.15 kWh (21%)</strong></div>
+            <div style="background:var(--surface-alt); padding:0.5rem; border-radius:6px;">📱 Normal: <strong>11.50 kWh (10%)</strong></div>
+          </div>
+          <div class="dash-btn-action">
+            <button class="btn-primary" style="flex:1;" onclick="switchTab('electricity')">View Full Supply Breakdown</button>
+          </div>
+        </div>
+
+        <!-- 4. Cafes & More Quick Widget -->
+        <div class="dashboard-card">
+          <div class="dashboard-card-header">
+            <h3 class="dash-card-title"><span>🍔</span> Cafes & More (Food Court)</h3>
+            <span class="badge badge-purple">Room Delivery</span>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+            Order from Domino's, Mom's Kitchen, Taco Bell, Rolls Empire, or MB Square (Non-Veg).
+          </p>
+          <div style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem;">
+            <span style="font-size: 0.75rem; background:#dcfce7; color:#16a34a; padding:0.2rem 0.5rem; border-radius:4px; font-weight:700;">🟢 Pure Veg Options</span>
+            <span style="font-size: 0.75rem; background:#fee2e2; color:#dc2626; padding:0.2rem 0.5rem; border-radius:4px; font-weight:700;">🔴 MB Square Non-Veg</span>
+          </div>
+          <div class="dash-btn-action">
+            <a href="cafes.html" target="_blank" class="btn-primary" style="flex:1; text-align:center; text-decoration:none;">Open Cafes & More ↗</a>
+          </div>
+        </div>
+
+        <!-- 5. Departmental Store Multi-Building Finder -->
+        <div class="dashboard-card">
+          <div class="dashboard-card-header">
+            <h3 class="dash-card-title"><span>🏬</span> Departmental Store Radar</h3>
+            <span class="badge badge-cyan">Multi-Building</span>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+            Find lab coats, practical files, locks & room essentials. Shows which building has stock if out of stock in BH-3.
+          </p>
+          <div class="dash-btn-action">
+            <a href="store.html" target="_blank" class="btn-secondary" style="flex:1; text-align:center; text-decoration:none;">Search Store Portal ↗</a>
+          </div>
+        </div>
+
+        <!-- 6. Campus OLX Marketplace -->
+        <div class="dashboard-card">
+          <div class="dashboard-card-header">
+            <h3 class="dash-card-title"><span>🔄</span> Senior Marketplace (OLX)</h3>
+            <span class="badge badge-orange">Verified Students</span>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+            Buy, sell, or rent coolers, bicycles, scientific calculators, and books from seniors with verified student IDs.
+          </p>
+          <div class="dash-btn-action">
+            <a href="marketplace.html" target="_blank" class="btn-secondary" style="flex:1; text-align:center; text-decoration:none;">Browse Campus OLX ↗</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1. CLEANING SERVICE SECTION -->
+    <section id="cleaning-tab" class="tab-pane" role="tabpanel">
+      <div class="section-topbar">
+        <div>
+          <h2>🧹 Hostel Room Cleaning & Housekeeping</h2>
+          <p>Schedule daily room sweep, floor mop, or washroom sanitization for your hostel room.</p>
+        </div>
+        <button class="btn-primary" onclick="openModal('cleaning-modal')">
+          + Schedule New Cleaning
+        </button>
+      </div>
+
+      <div class="quick-help-banner">
+        <div>
+          <strong>🔔 Daily Housekeeping Hours:</strong> 08:30 AM to 06:30 PM across all BH & GH blocks.
+        </div>
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          <label for="cleaning-block-filter" style="font-size: 0.85rem; font-weight: 600;">Filter Block:</label>
+          <select id="cleaning-block-filter" class="form-control" style="width: auto;" onchange="loadCleaningRequests()">
+            <option value="ALL">All Blocks</option>
+            <option value="BH-1">BH-1</option>
+            <option value="BH-2">BH-2</option>
+            <option value="BH-3">BH-3</option>
+            <option value="BH-4">BH-4</option>
+            <option value="BH-5">BH-5</option>
+            <option value="GH-1">GH-1</option>
+            <option value="GH-2">GH-2</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="custom-table" id="cleaning-table">
+          <thead>
+            <tr>
+              <th>Request ID</th>
+              <th>Student Name</th>
+              <th>Hostel & Room</th>
+              <th>Service Type</th>
+              <th>Preferred Slot</th>
+              <th>Instructions</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="cleaning-table-body">
+            <!-- Populated dynamically via JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 2. MESS MENU SECTION -->
+    <section id="mess-tab" class="tab-pane" role="tabpanel">
+      <div class="section-topbar">
+        <div>
+          <h2>🍲 7-Day Campus Mess Schedule</h2>
+          <p>Nutritious, hygienic breakfast, lunch, evening snacks & dinner menus for LPU Hostels.</p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          <label for="mess-day-select" style="font-size: 0.85rem; font-weight: 600;">Select Day:</label>
+          <select id="mess-day-select" class="form-control" style="width: auto;" onchange="loadMessMenu()">
+            <option value="Monday">Monday</option>
+            <option value="Tuesday">Tuesday</option>
+            <option value="Wednesday">Wednesday</option>
+            <option value="Thursday">Thursday</option>
+            <option value="Friday">Friday</option>
+            <option value="Saturday">Saturday</option>
+            <option value="Sunday">Sunday</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="cards-grid" id="mess-cards-container">
+        <!-- 1. Breakfast -->
+        <div class="app-card menu-item-card" style="border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; background: var(--surface); display: flex; flex-direction: column; justify-content: space-between; box-shadow: var(--shadow-sm);">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <h3 style="color: var(--navy); font-size: 1.2rem; font-weight: 700; margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+                <span>🌅</span> Breakfast
+              </h3>
+              <span class="badge" style="background: #e0f2fe; color: #0369a1; font-weight: 600; font-size: 0.8rem;">⏰ 07:00 AM - 09:00 AM</span>
+            </div>
+            <div style="display: inline-block; font-size: 0.78rem; font-weight: 700; color: #15803d; background: #dcfce7; padding: 0.25rem 0.65rem; border-radius: 6px; margin-bottom: 0.75rem; width: fit-content;">
+              ⭐ Today's Special: Desi Ghee Paratha
+            </div>
+            <p style="font-size: 0.95rem; color: var(--text-main); line-height: 1.6; margin-bottom: 1rem; font-weight: 500;">
+              Aloo Paratha with Curd, Mint Chutney, White Butter, Boiled Eggs / Fresh Banana, Tea &amp; Coffee
+            </p>
+          </div>
+          <div style="font-size: 0.78rem; color: var(--text-muted); border-top: 1px dashed var(--border); padding-top: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+            <span>Mess Halls 1 &amp; 2 &bull; Unlimited Servings</span>
+            <span style="color: #15803d; font-weight: 600;">✓ Dietician Approved</span>
+          </div>
+        </div>
+
+        <!-- 2. Lunch -->
+        <div class="app-card menu-item-card" style="border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; background: var(--surface); display: flex; flex-direction: column; justify-content: space-between; box-shadow: var(--shadow-sm);">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <h3 style="color: var(--navy); font-size: 1.2rem; font-weight: 700; margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+                <span>☀️</span> Lunch
+              </h3>
+              <span class="badge" style="background: #e0f2fe; color: #0369a1; font-weight: 600; font-size: 0.8rem;">⏰ 11:00 AM - 02:30 PM</span>
+            </div>
+            <div style="display: inline-block; font-size: 0.78rem; font-weight: 700; color: #15803d; background: #dcfce7; padding: 0.25rem 0.65rem; border-radius: 6px; margin-bottom: 0.75rem; width: fit-content;">
+              ⭐ Today's Special: Kashmiri Rajma
+            </div>
+            <p style="font-size: 0.95rem; color: var(--text-main); line-height: 1.6; margin-bottom: 1rem; font-weight: 500;">
+              Amritsari Chole / Rajma Masala, Jeera Rice, Tawa Roti, Poori / Bhature, Fresh Green Salad, Boondi Raita
+            </p>
+          </div>
+          <div style="font-size: 0.78rem; color: var(--text-muted); border-top: 1px dashed var(--border); padding-top: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+            <span>Mess Halls 1 &amp; 2 &bull; Unlimited Servings</span>
+            <span style="color: #15803d; font-weight: 600;">✓ Dietician Approved</span>
+          </div>
+        </div>
+
+        <!-- 3. Snacks -->
+        <div class="app-card menu-item-card" style="border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; background: var(--surface); display: flex; flex-direction: column; justify-content: space-between; box-shadow: var(--shadow-sm);">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <h3 style="color: var(--navy); font-size: 1.2rem; font-weight: 700; margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+                <span>☕</span> Evening Snacks
+              </h3>
+              <span class="badge" style="background: #e0f2fe; color: #0369a1; font-weight: 600; font-size: 0.8rem;">⏰ 05:00 PM - 06:00 PM</span>
+            </div>
+            <div style="display: inline-block; font-size: 0.78rem; font-weight: 700; color: #15803d; background: #dcfce7; padding: 0.25rem 0.65rem; border-radius: 6px; margin-bottom: 0.75rem; width: fit-content;">
+              ⭐ Today's Special: Crispy Cutlet / Samosa Chaat
+            </div>
+            <p style="font-size: 0.95rem; color: var(--text-main); line-height: 1.6; margin-bottom: 1rem; font-weight: 500;">
+              Veg Cutlet / Crispy Bread Pakoda / Samosa with Mint &amp; Tamarind Chutney, Hot Ginger Masala Chai
+            </p>
+          </div>
+          <div style="font-size: 0.78rem; color: var(--text-muted); border-top: 1px dashed var(--border); padding-top: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+            <span>Mess Halls 1 &amp; 2 &bull; Fresh &amp; Crisp</span>
+            <span style="color: #15803d; font-weight: 600;">✓ Evening Refresher</span>
+          </div>
+        </div>
+
+        <!-- 4. Dinner -->
+        <div class="app-card menu-item-card" style="border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; background: var(--surface); display: flex; flex-direction: column; justify-content: space-between; box-shadow: var(--shadow-sm);">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <h3 style="color: var(--navy); font-size: 1.2rem; font-weight: 700; margin: 0; display: flex; align-items: center; gap: 0.5rem;">
+                <span>🌙</span> Dinner
+              </h3>
+              <span class="badge" style="background: #e0f2fe; color: #0369a1; font-weight: 600; font-size: 0.8rem;">⏰ 08:00 PM - 10:00 PM</span>
+            </div>
+            <div style="display: inline-block; font-size: 0.78rem; font-weight: 700; color: #15803d; background: #dcfce7; padding: 0.25rem 0.65rem; border-radius: 6px; margin-bottom: 0.75rem; width: fit-content;">
+              ⭐ Today's Special: Shahi Paneer &amp; Gulab Jamun
+            </div>
+            <p style="font-size: 0.95rem; color: var(--text-main); line-height: 1.6; margin-bottom: 1rem; font-weight: 500;">
+              Dal Makhani, Shahi Paneer / Chicken Curry, Tawa Roti, Butter Naan, Steamed Basmati Rice, Hot Gulab Jamun (2 pcs)
+            </p>
+          </div>
+          <div style="font-size: 0.78rem; color: var(--text-muted); border-top: 1px dashed var(--border); padding-top: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+            <span>Mess Halls 1 &amp; 2 &bull; Unlimited Servings</span>
+            <span style="color: #15803d; font-weight: 600;">✓ Royal Dinner Feast</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. ELECTRICITY BILLS & METER SECTION -->
+    <section id="electricity-tab" class="tab-pane" role="tabpanel">
+      <div class="section-topbar">
+        <div>
+          <h2>⚡ Private Room Electricity Meter & Power Supply Analytics</h2>
+          <p>Digital sub-meter reading, official photo proof, and detailed appliance supply consumption breakdown.</p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          <button class="btn-primary" onclick="searchMeterReading()">🔄 Refresh Meter Reading</button>
+        </div>
+      </div>
+
+      <!-- Private Student Domain Verified Badge -->
+      <div class="private-domain-badge">
+        <span style="font-size: 1.2rem;">🔒</span>
+        <div>
+          <strong>Authenticated Student Domain:</strong> <span id="meter-student-name">Sarthak Mishra</span> (Reg: <span id="meter-student-reg">12204561</span>) &bull; Locked to: <strong id="meter-auth-room">BH-3, Room 412</strong>
+          <div style="font-size: 0.76rem; color: #047857; margin-top: 0.15rem;">Encrypted Sub-Meter ID: LPU-MTR-8823 &bull; Access strictly restricted to verified room occupants.</div>
+        </div>
+      </div>
+
+      <!-- Meter Display Dashboard -->
+      <div class="meter-display-box" id="meter-display-container">
+        <div class="meter-stat-item">
+          <span class="meter-stat-label">Hostel & Room</span>
+          <span class="meter-stat-val" id="meter-hostel-room">BH-3 • Room 412</span>
+          <span style="font-size: 0.78rem; color: #94a3b8;">Sub-meter ID: LPU-MTR-8823</span>
+        </div>
+        <div class="meter-stat-item">
+          <span class="meter-stat-label">Previous Meter Reading</span>
+          <span class="meter-stat-val" id="meter-prev">980.00 kWh</span>
+        </div>
+        <div class="meter-stat-item">
+          <span class="meter-stat-label">Current Meter Reading</span>
+          <span class="meter-stat-val highlight" id="meter-curr">1095.00 kWh</span>
+        </div>
+        <div class="meter-stat-item">
+          <span class="meter-stat-label">Units Consumed</span>
+          <span class="meter-stat-val" id="meter-units">115.00 Units</span>
+          <span style="font-size: 0.8rem; color: #cbd5e1;">Rate: ₹7.50 / Unit</span>
+        </div>
+        <div class="meter-stat-item">
+          <span class="meter-stat-label">Bill Due Amount</span>
+          <span class="meter-stat-val" style="color: #f87171;" id="meter-amount">₹862.50</span>
+          <div style="margin-top: 0.5rem;">
+            <span class="badge badge-unpaid" id="meter-status-badge">Unpaid</span>
+            <button class="btn-success" id="pay-bill-btn" style="margin-left: 0.5rem;" onclick="openPayBillModal()">Pay Bill Online</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- WHERE POWER SUPPLY IS USED - APPLIANCE BREAKDOWN -->
+      <div class="section-topbar" style="margin-top: 2.2rem;">
+        <div>
+          <h3>📊 Where is Your Room's Power Supply Consumed?</h3>
+          <p>Detailed sub-circuit telemetry showing kWh consumption, load shares, and connected variables.</p>
+        </div>
+        <div style="font-size: 0.95rem; font-weight: 700; color: var(--primary);">
+          Total Supply Monitored: <span id="supply-total-kwh">115.00 kWh (100%)</span>
+        </div>
+      </div>
+
+      <div class="supply-channels-grid" id="supply-breakdown-container">
+        <!-- 1. Air Conditioner (AC) -->
+        <div class="supply-channel-card ac-card">
+          <div class="supply-header">
+            <div class="supply-icon-title">
+              <span style="font-size: 1.4rem;">❄️</span>
+              <div>
+                <strong>Air Conditioner (AC)</strong>
+                <div style="font-size: 0.72rem; color: var(--text-muted);">Variable: ac</div>
+              </div>
+            </div>
+            <span class="supply-pct-badge ac-badge" id="ac-pct">45.0%</span>
+          </div>
+          <div class="supply-metric-row">
+            <span class="supply-kwh" id="ac-kwh">51.75 kWh</span>
+            <span class="supply-cost" id="ac-cost">₹388.13</span>
+          </div>
+          <div class="supply-progress-wrap">
+            <div class="supply-progress-fill fill-ac" style="width: 45%;"></div>
+          </div>
+          <p class="supply-specs"><strong>Specs:</strong> 1.5 Ton Dual Inverter (Eco Mode, Thermostat 24°C, ~5.5 hrs/night)</p>
+          <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: center;">
+            <span class="supply-circuit-id" id="ac-circuit">BH3-AC-412</span>
+            <span style="font-size: 0.75rem; color: #0284c7; font-weight: 600;">Active 🟢</span>
+          </div>
+        </div>
+
+        <!-- 2. Lights and Fans -->
+        <div class="supply-channel-card lights-card">
+          <div class="supply-header">
+            <div class="supply-icon-title">
+              <span style="font-size: 1.4rem;">💡</span>
+              <div>
+                <strong>Lights & Fans</strong>
+                <div style="font-size: 0.72rem; color: var(--text-muted);">Variable: lights and fans</div>
+              </div>
+            </div>
+            <span class="supply-pct-badge lights-badge" id="lights-pct">24.0%</span>
+          </div>
+          <div class="supply-metric-row">
+            <span class="supply-kwh" id="lights-kwh">27.60 kWh</span>
+            <span class="supply-cost" id="lights-cost">₹207.00</span>
+          </div>
+          <div class="supply-progress-wrap">
+            <div class="supply-progress-fill fill-lights" style="width: 24%;"></div>
+          </div>
+          <p class="supply-specs"><strong>Specs:</strong> 2x 28W BLDC Ceiling Fans + 2x 20W LED Tubes (~14 hrs/day)</p>
+          <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: center;">
+            <span class="supply-circuit-id" id="lights-circuit">BH3-LT-412</span>
+            <span style="font-size: 0.75rem; color: #ca8a04; font-weight: 600;">Optimal ⚡</span>
+          </div>
+        </div>
+
+        <!-- 3. Power Socket -->
+        <div class="supply-channel-card pwr-card">
+          <div class="supply-header">
+            <div class="supply-icon-title">
+              <span style="font-size: 1.4rem;">🔌</span>
+              <div>
+                <strong>Power Socket</strong>
+                <div style="font-size: 0.72rem; color: var(--text-muted);">Variable: power socket</div>
+              </div>
+            </div>
+            <span class="supply-pct-badge pwr-badge" id="pwr-pct">21.0%</span>
+          </div>
+          <div class="supply-metric-row">
+            <span class="supply-kwh" id="pwr-kwh">24.15 kWh</span>
+            <span class="supply-cost" id="pwr-cost">₹181.12</span>
+          </div>
+          <div class="supply-progress-wrap">
+            <div class="supply-progress-fill fill-pwr" style="width: 21%;"></div>
+          </div>
+          <p class="supply-specs"><strong>Specs:</strong> 16A Dedicated Line (Personal Cooler, Electric Kettle, Steam Iron cycles)</p>
+          <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: center;">
+            <span class="supply-circuit-id" id="pwr-circuit">BH3-PWR-412</span>
+            <span style="font-size: 0.75rem; color: #7c3aed; font-weight: 600;">Surge Safe 🛡️</span>
+          </div>
+        </div>
+
+        <!-- 4. Normal Socket -->
+        <div class="supply-channel-card norm-card">
+          <div class="supply-header">
+            <div class="supply-icon-title">
+              <span style="font-size: 1.4rem;">📱</span>
+              <div>
+                <strong>Normal Socket</strong>
+                <div style="font-size: 0.72rem; color: var(--text-muted);">Variable: normal socket</div>
+              </div>
+            </div>
+            <span class="supply-pct-badge norm-badge" id="norm-pct">10.0%</span>
+          </div>
+          <div class="supply-metric-row">
+            <span class="supply-kwh" id="norm-kwh">11.50 kWh</span>
+            <span class="supply-cost" id="norm-cost">₹86.25</span>
+          </div>
+          <div class="supply-progress-wrap">
+            <div class="supply-progress-fill fill-norm" style="width: 10%;"></div>
+          </div>
+          <p class="supply-specs"><strong>Specs:</strong> 6A Outlets (Laptop 150W adapter, smartphone chargers, desk study lamp)</p>
+          <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: center;">
+            <span class="supply-circuit-id" id="norm-circuit">BH3-SOC-412</span>
+            <span style="font-size: 0.75rem; color: #059669; font-weight: 600;">Continuous 🔋</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Verified Photo Proof Card -->
+      <div class="meter-photo-card">
+        <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&auto=format&fit=crop&q=80" alt="Sub-meter Photo Proof" class="meter-photo-thumb" onclick="openPhotoProofModal()">
+        <div>
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+            <span style="background: #16a34a; color: white; font-size: 0.72rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 4px;">VERIFIED PHOTO PROOF</span>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">Timestamp: 2026-09-12 18:30 IST</span>
+          </div>
+          <h4 style="font-size: 1.05rem; font-weight: 700;">Sub-Meter Digital Display Capture (Room 412)</h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.2rem;">Physical meter reading photographed and certified by Hostel Caretaker prior to bill generation. Click image to inspect full photo.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. LE BROCS FOOD DELIVERY SECTION -->
+    <section id="lebrocs-tab" class="tab-pane" role="tabpanel">
+      <div class="section-topbar">
+        <div>
+          <h2>🍔 Le Brocs - Uni-Mall Hostel Delivery</h2>
+          <p>Direct late-night delivery to BH & GH rooms. Hot burgers, wraps, momos, pizzas & combos.</p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          <select id="brocs-category-filter" class="form-control" style="width: auto;" onchange="loadBrocsMenu()">
+            <option value="ALL">All Categories</option>
+            <option value="Burgers">Burgers</option>
+            <option value="Momos">Momos</option>
+            <option value="Wraps & Rolls">Wraps & Rolls</option>
+            <option value="Pizzas">Pizzas</option>
+            <option value="Sides & Snacks">Sides & Snacks</option>
+            <option value="Beverages">Beverages</option>
+            <option value="Combos">Combos</option>
+          </select>
+          <button class="btn-primary" onclick="openCartModal()">
+            View Cart & Checkout 🛒
+          </button>
+        </div>
+      </div>
+
+      <div class="cards-grid" id="brocs-menu-grid">
+        <!-- Populated via JS -->
+      </div>
+    </section>
+
+    <!-- 5. SENIOR MARKETPLACE SECTION -->
+    <section id="marketplace-tab" class="tab-pane" role="tabpanel">
+      <div class="section-topbar">
+        <div>
+          <h2>🔄 Senior Marketplace (Buy & Sell)</h2>
+          <p>Verified peer-to-peer student marketplace. Grab coolers, cycles, drafters, calculators & books.</p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+          <input type="text" id="market-search" class="form-control" placeholder="Search coolers, books..." style="width: 180px;" oninput="loadMarketplace()">
+          <select id="market-cat-filter" class="form-control" style="width: auto;" onchange="loadMarketplace()">
+            <option value="ALL">All Categories</option>
+            <option value="Hostel Essentials">Hostel Essentials</option>
+            <option value="Electronics & Study">Electronics & Study</option>
+            <option value="Vehicles & Transport">Vehicles & Transport</option>
+            <option value="Appliances">Appliances</option>
+            <option value="Civil & Mech Gear">Civil & Mech Gear</option>
+            <option value="Textbooks">Textbooks</option>
+          </select>
+          <button class="btn-primary" onclick="openModal('post-item-modal')">
+            + Post Your Item
+          </button>
+        </div>
+      </div>
+
+      <div class="cards-grid" id="marketplace-grid">
+        <!-- Populated via JS -->
+      </div>
+    </section>
+
+    <!-- 6. CENTRAL LIBRARY LOCATOR SECTION -->
+    <section id="library-tab" class="tab-pane" role="tabpanel">
+      <div class="section-topbar">
+        <div>
+          <h2>📚 Central Library (Block 36) Book Locator</h2>
+          <p>Find physical floor, rack, and shelf locations for course textbooks & reserve copies instantly.</p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+          <input type="text" id="lib-search" class="form-control" placeholder="Search title, author, or ISBN..." style="width: 220px;" oninput="loadLibraryBooks()">
+          <select id="lib-dept-filter" class="form-control" style="width: auto;" onchange="loadLibraryBooks()">
+            <option value="ALL">All Departments</option>
+            <option value="Computer Science & Engineering">CSE & IT</option>
+            <option value="Electronics & Communication">ECE</option>
+            <option value="Mechanical Engineering">Mechanical</option>
+            <option value="Applied Sciences & Pharmacy">Pharmacy & Science</option>
+            <option value="Mittal School of Business">MBA / Management</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="cards-grid" id="library-grid">
+        <!-- Populated via JS -->
+      </div>
+    </section>
+
+    <!-- 7. WARDENS & TECHNICIANS SECTION -->
+    <section id="contacts-tab" class="tab-pane" role="tabpanel">
+      <div class="section-topbar">
+        <div>
+          <h2>📞 Wardens, Technicians & Emergency Directory</h2>
+          <p>Official phone numbers and office locations for instant assistance across LPU campus.</p>
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+          <select id="contacts-cat-filter" class="form-control" style="width: auto;" onchange="loadContactsTab()">
+            <option value="ALL">All Contacts & Directory (Wardens, Deans, Hospital)</option>
+            <option value="Wardens">👨‍💼 Hostel Wardens (BH & GH)</option>
+            <option value="Deans">🎓 Deans of School</option>
+            <option value="Ambulance">🚑 24x7 Ambulance & Emergency</option>
+            <option value="Uni-Hospital">🏥 Uni-Hospital Desk & Doctors</option>
+            <option value="Security">🛡️ Campus Security Control</option>
+            <option value="Helpline">📞 Anti-Ragging & Women Helpline</option>
+            <option value="Technicians">🔧 Power & Water Technicians</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="cards-grid" id="contacts-grid">
+        <div class="app-card" style="display: flex; flex-direction: column; padding: 1.25rem; border: 1px solid var(--border-color); border-radius: 12px; background: var(--surface-card); box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+            <span class="badge" style="background:#ffedd5; color:#ea580c; font-weight: 700; text-transform: uppercase; font-size: 0.72rem;">Wardens</span>
+            <span style="font-size: 0.75rem; color: #16a34a; font-weight: 600;">● 08:00 AM - 10:00 PM</span>
+          </div>
+          <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 0.25rem;">Hostel Warden BH-1 & BH-2</h4>
+          <div style="font-size: 0.9rem; color: #475569; font-weight: 600; margin-bottom: 0.35rem;">👤 Mr. Harpreet Singh</div>
+          <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 1rem;">📍 Location: BH-1 Warden Office (Room 101)</div>
+          <div style="margin-top: auto; display: flex; gap: 0.5rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem;">
+            <a href="tel:+919814010203" class="btn-call" style="flex:1; text-align:center; padding:0.45rem 0.75rem; border-radius:6px; background:#0284c7; color:#fff; text-decoration:none; font-size:0.85rem; font-weight:600;">📞 +91 98140 10203</a>
+            <button class="btn-copy" onclick="copyNumber('+91 98140 10203')" style="padding:0.45rem 0.75rem; border-radius:6px; border:1px solid #cbd5e1; background:var(--surface-alt); cursor:pointer; font-size:0.82rem;">📋 Copy</button>
+          </div>
+        </div>
+        <div class="app-card" style="display: flex; flex-direction: column; padding: 1.25rem; border: 1px solid var(--border-color); border-radius: 12px; background: var(--surface-card); box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+            <span class="badge" style="background:#ffedd5; color:#ea580c; font-weight: 700; text-transform: uppercase; font-size: 0.72rem;">Wardens</span>
+            <span style="font-size: 0.75rem; color: #16a34a; font-weight: 600;">● 08:00 AM - 10:00 PM</span>
+          </div>
+          <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 0.25rem;">Hostel Warden BH-3 & BH-4</h4>
+          <div style="font-size: 0.9rem; color: #475569; font-weight: 600; margin-bottom: 0.35rem;">👤 Mr. Rakesh Chander</div>
+          <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 1rem;">📍 Location: BH-3 Warden Office (Room 102)</div>
+          <div style="margin-top: auto; display: flex; gap: 0.5rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem;">
+            <a href="tel:+919814020304" class="btn-call" style="flex:1; text-align:center; padding:0.45rem 0.75rem; border-radius:6px; background:#0284c7; color:#fff; text-decoration:none; font-size:0.85rem; font-weight:600;">📞 +91 98140 20304</a>
+            <button class="btn-copy" onclick="copyNumber('+91 98140 20304')" style="padding:0.45rem 0.75rem; border-radius:6px; border:1px solid #cbd5e1; background:var(--surface-alt); cursor:pointer; font-size:0.82rem;">📋 Copy</button>
+          </div>
+        </div>
+        <div class="app-card" style="display: flex; flex-direction: column; padding: 1.25rem; border: 1px solid var(--border-color); border-radius: 12px; background: var(--surface-card); box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+            <span class="badge" style="background:#ffedd5; color:#ea580c; font-weight: 700; text-transform: uppercase; font-size: 0.72rem;">Wardens</span>
+            <span style="font-size: 0.75rem; color: #16a34a; font-weight: 600;">● 09:00 AM - 08:00 PM</span>
+          </div>
+          <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 0.25rem;">Chief Warden - Boys Hostels (BH)</h4>
+          <div style="font-size: 0.9rem; color: #475569; font-weight: 600; margin-bottom: 0.35rem;">👤 Prof. Gurpreet Singh</div>
+          <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 1rem;">📍 Location: Central Hostel Office (BH-3 Ground)</div>
+          <div style="margin-top: auto; display: flex; gap: 0.5rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem;">
+            <a href="tel:+919876011223" class="btn-call" style="flex:1; text-align:center; padding:0.45rem 0.75rem; border-radius:6px; background:#0284c7; color:#fff; text-decoration:none; font-size:0.85rem; font-weight:600;">📞 +91 98760 11223</a>
+            <button class="btn-copy" onclick="copyNumber('+91 98760 11223')" style="padding:0.45rem 0.75rem; border-radius:6px; border:1px solid #cbd5e1; background:var(--surface-alt); cursor:pointer; font-size:0.82rem;">📋 Copy</button>
+          </div>
+        </div>
+        <div class="app-card" style="display: flex; flex-direction: column; padding: 1.25rem; border: 1px solid var(--border-color); border-radius: 12px; background: var(--surface-card); box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+            <span class="badge" style="background:#ffedd5; color:#ea580c; font-weight: 700; text-transform: uppercase; font-size: 0.72rem;">Wardens</span>
+            <span style="font-size: 0.75rem; color: #16a34a; font-weight: 600;">● 09:00 AM - 08:00 PM</span>
+          </div>
+          <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 0.25rem;">Chief Warden - Girls Hostels (GH)</h4>
+          <div style="font-size: 0.9rem; color: #475569; font-weight: 600; margin-bottom: 0.35rem;">👤 Dr. Sunita Pathak</div>
+          <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 1rem;">📍 Location: GH Central Block Office</div>
+          <div style="margin-top: auto; display: flex; gap: 0.5rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem;">
+            <a href="tel:+919876044556" class="btn-call" style="flex:1; text-align:center; padding:0.45rem 0.75rem; border-radius:6px; background:#0284c7; color:#fff; text-decoration:none; font-size:0.85rem; font-weight:600;">📞 +91 98760 44556</a>
+            <button class="btn-copy" onclick="copyNumber('+91 98760 44556')" style="padding:0.45rem 0.75rem; border-radius:6px; border:1px solid #cbd5e1; background:var(--surface-alt); cursor:pointer; font-size:0.82rem;">📋 Copy</button>
+          </div>
+        </div>
+        <div class="app-card" style="display: flex; flex-direction: column; padding: 1.25rem; border: 1px solid var(--border-color); border-radius: 12px; background: var(--surface-card); box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+            <span class="badge" style="background:#ffedd5; color:#ea580c; font-weight: 700; text-transform: uppercase; font-size: 0.72rem;">Wardens</span>
+            <span style="font-size: 0.75rem; color: #16a34a; font-weight: 600;">● 08:00 AM - 10:00 PM</span>
+          </div>
+          <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 0.25rem;">Hostel Warden BH-5 & BH-6</h4>
+          <div style="font-size: 0.9rem; color: #475569; font-weight: 600; margin-bottom: 0.35rem;">👤 Mr. Anil Kumar</div>
+          <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 1rem;">📍 Location: BH-5 Warden Office (Room 101)</div>
+          <div style="margin-top: auto; display: flex; gap: 0.5rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem;">
+            <a href="tel:+919814030405" class="btn-call" style="flex:1; text-align:center; padding:0.45rem 0.75rem; border-radius:6px; background:#0284c7; color:#fff; text-decoration:none; font-size:0.85rem; font-weight:600;">📞 +91 98140 30405</a>
+            <button class="btn-copy" onclick="copyNumber('+91 98140 30405')" style="padding:0.45rem 0.75rem; border-radius:6px; border:1px solid #cbd5e1; background:var(--surface-alt); cursor:pointer; font-size:0.82rem;">📋 Copy</button>
+          </div>
+        </div>
+        <div class="app-card" style="display: flex; flex-direction: column; padding: 1.25rem; border: 1px solid var(--border-color); border-radius: 12px; background: var(--surface-card); box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+            <span class="badge" style="background:#ffedd5; color:#ea580c; font-weight: 700; text-transform: uppercase; font-size: 0.72rem;">Wardens</span>
+            <span style="font-size: 0.75rem; color: #16a34a; font-weight: 600;">● 08:00 AM - 10:00 PM</span>
+          </div>
+          <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 0.25rem;">Hostel Warden GH-1 & GH-2</h4>
+          <div style="font-size: 0.9rem; color: #475569; font-weight: 600; margin-bottom: 0.35rem;">👤 Ms. Neha Sharma</div>
+          <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 1rem;">📍 Location: GH-1 Warden Office (Room 004)</div>
+          <div style="margin-top: auto; display: flex; gap: 0.5rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem;">
+            <a href="tel:+919814040506" class="btn-call" style="flex:1; text-align:center; padding:0.45rem 0.75rem; border-radius:6px; background:#0284c7; color:#fff; text-decoration:none; font-size:0.85rem; font-weight:600;">📞 +91 98140 40506</a>
+            <button class="btn-copy" onclick="copyNumber('+91 98140 40506')" style="padding:0.45rem 0.75rem; border-radius:6px; border:1px solid #cbd5e1; background:var(--surface-alt); cursor:pointer; font-size:0.82rem;">📋 Copy</button>
+          </div>
+        </div>
+        <div class="app-card" style="display: flex; flex-direction: column; padding: 1.25rem; border: 1px solid var(--border-color); border-radius: 12px; background: var(--surface-card); box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+            <span class="badge" style="background:#ede9fe; color:#7c3aed; font-weight: 700; text-transform: uppercase; font-size: 0.72rem;">Deans</span>
+            <span style="font-size: 0.75rem; color: #16a34a; font-weight: 600;">● 09:00 AM - 05:00 PM</span>
+          </div>
+          <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 0.25rem;">Dean, School of Computer Science & Engineering</h4>
+          <div style="font-size: 0.9rem; color: #475569; font-weight: 600; margin-bottom: 0.35rem;">👤 Dr. Rajeev Sobti</div>
+          <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 1rem;">📍 Location: Block 34 (Dean Office)</div>
+          <div style="margin-top: auto; display: flex; gap: 0.5rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem;">
+            <a href="tel:+911824517301" class="btn-call" style="flex:1; text-align:center; padding:0.45rem 0.75rem; border-radius:6px; background:#0284c7; color:#fff; text-decoration:none; font-size:0.85rem; font-weight:600;">📞 +91 1824 517301</a>
+            <button class="btn-copy" onclick="copyNumber('+91 1824 517301')" style="padding:0.45rem 0.75rem; border-radius:6px; border:1px solid #cbd5e1; background:var(--surface-alt); cursor:pointer; font-size:0.82rem;">📋 Copy</button>
+          </div>
+        </div>
+        <div class="app-card" style="display: flex; flex-direction: column; padding: 1.25rem; border: 1px solid var(--border-color); border-radius: 12px; background: var(--surface-card); box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+            <span class="badge" style="background:#ede9fe; color:#7c3aed; font-weight: 700; text-transform: uppercase; font-size: 0.72rem;">Deans</span>
+            <span style="font-size: 0.75rem; color: #16a34a; font-weight: 600;">● 09:30 AM - 05:30 PM</span>
+          </div>
+          <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 0.25rem;">Pro Vice Chancellor & Dean of Technology</h4>
+          <div style="font-size: 0.9rem; color: #475569; font-weight: 600; margin-bottom: 0.35rem;">👤 Dr. Lovi Raj Gupta</div>
+          <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 1rem;">📍 Location: Administrative Block (Dean Office)</div>
+          <div style="margin-top: auto; display: flex; gap: 0.5rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem;">
+            <a href="tel:+911824517005" class="btn-call" style="flex:1; text-align:center; padding:0.45rem 0.75rem; border-radius:6px; background:#0284c7; color:#fff; text-decoration:none; font-size:0.85rem; font-weight:600;">📞 +91 1824 517005</a>
+            <button class="btn-copy" onclick="copyNumber('+91 1824 517005')" style="padding:0.45rem 0.75rem; border-radius:6px; border:1px solid #cbd5e1; background:var(--surface-alt); cursor:pointer; font-size:0.82rem;">📋 Copy</button>
+          </div>
+        </div>
+        <div class="app-card" style="display: flex; flex-direction: column; padding: 1.25rem; border: 1px solid var(--border-color); border-radius: 12px; background: var(--surface-card); box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+            <span class="badge" style="background:#ede9fe; color:#7c3aed; font-weight: 700; text-transform: uppercase; font-size: 0.72rem;">Deans</span>
+            <span style="font-size: 0.75rem; color: #16a34a; font-weight: 600;">● 09:00 AM - 05:00 PM</span>
+          </div>
+          <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 0.25rem;">Dean, Mittal School of Business</h4>
+          <div style="font-size: 0.9rem; color: #475569; font-weight: 600; margin-bottom: 0.35rem;">👤 Dr. Rajesh Verma</div>
+          <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 1rem;">📍 Location: Block 14 (Management Wing)</div>
+          <div style="margin-top: auto; display: flex; gap: 0.5rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem;">
+            <a href="tel:+911824517400" class="btn-call" style="flex:1; text-align:center; padding:0.45rem 0.75rem; border-radius:6px; background:#0284c7; color:#fff; text-decoration:none; font-size:0.85rem; font-weight:600;">📞 +91 1824 517400</a>
+            <button class="btn-copy" onclick="copyNumber('+91 1824 517400')" style="padding:0.45rem 0.75rem; border-radius:6px; border:1px solid #cbd5e1; background:var(--surface-alt); cursor:pointer; font-size:0.82rem;">📋 Copy</button>
+          </div>
+        </div>
+        <div class="app-card" style="display: flex; flex-direction: column; padding: 1.25rem; border: 1px solid var(--border-color); border-radius: 12px; background: var(--surface-card); box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+            <span class="badge" style="background:#fee2e2; color:#b91c1c; font-weight: 700; text-transform: uppercase; font-size: 0.72rem;">Ambulance</span>
+            <span style="font-size: 0.75rem; color: #16a34a; font-weight: 600;">● 24x7 Available</span>
+          </div>
+          <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 0.25rem;">24x7 University Ambulance Hotline</h4>
+          <div style="font-size: 0.9rem; color: #475569; font-weight: 600; margin-bottom: 0.35rem;">👤 Dr. Rajesh Sharma (Chief Medical Officer)</div>
+          <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 1rem;">📍 Location: Uni-Hospital (Near Gate 4)</div>
+          <div style="margin-top: auto; display: flex; gap: 0.5rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem;">
+            <a href="tel:+911824517100" class="btn-call" style="flex:1; text-align:center; padding:0.45rem 0.75rem; border-radius:6px; background:#0284c7; color:#fff; text-decoration:none; font-size:0.85rem; font-weight:600;">📞 +91 1824 517100</a>
+            <button class="btn-copy" onclick="copyNumber('+91 1824 517100')" style="padding:0.45rem 0.75rem; border-radius:6px; border:1px solid #cbd5e1; background:var(--surface-alt); cursor:pointer; font-size:0.82rem;">📋 Copy</button>
+          </div>
+        </div>
+        <div class="app-card" style="display: flex; flex-direction: column; padding: 1.25rem; border: 1px solid var(--border-color); border-radius: 12px; background: var(--surface-card); box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+            <span class="badge" style="background:#ccfbf1; color:#0f766e; font-weight: 700; text-transform: uppercase; font-size: 0.72rem;">Uni-Hospital</span>
+            <span style="font-size: 0.75rem; color: #16a34a; font-weight: 600;">● 24x7 Active</span>
+          </div>
+          <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 0.25rem;">Uni-Hospital Reception & Doctor Booking</h4>
+          <div style="font-size: 0.9rem; color: #475569; font-weight: 600; margin-bottom: 0.35rem;">👤 Mrs. Sunita Verma (Head Receptionist)</div>
+          <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 1rem;">📍 Location: Uni-Hospital Main Desk</div>
+          <div style="margin-top: auto; display: flex; gap: 0.5rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem;">
+            <a href="tel:+911824517102" class="btn-call" style="flex:1; text-align:center; padding:0.45rem 0.75rem; border-radius:6px; background:#0284c7; color:#fff; text-decoration:none; font-size:0.85rem; font-weight:600;">📞 +91 1824 517102</a>
+            <button class="btn-copy" onclick="copyNumber('+91 1824 517102')" style="padding:0.45rem 0.75rem; border-radius:6px; border:1px solid #cbd5e1; background:var(--surface-alt); cursor:pointer; font-size:0.82rem;">📋 Copy</button>
+          </div>
+        </div>
+        <div class="app-card" style="display: flex; flex-direction: column; padding: 1.25rem; border: 1px solid var(--border-color); border-radius: 12px; background: var(--surface-card); box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+            <span class="badge" style="background:#fef3c7; color:#b45309; font-weight: 700; text-transform: uppercase; font-size: 0.72rem;">Security</span>
+            <span style="font-size: 0.75rem; color: #16a34a; font-weight: 600;">● 24x7 Active</span>
+          </div>
+          <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 0.25rem;">LPU Central Security & Control Room</h4>
+          <div style="font-size: 0.9rem; color: #475569; font-weight: 600; margin-bottom: 0.35rem;">👤 Inspector Balwinder Singh</div>
+          <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 1rem;">📍 Location: Main Control Tower (Gate 1)</div>
+          <div style="margin-top: auto; display: flex; gap: 0.5rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem;">
+            <a href="tel:+911824517000" class="btn-call" style="flex:1; text-align:center; padding:0.45rem 0.75rem; border-radius:6px; background:#0284c7; color:#fff; text-decoration:none; font-size:0.85rem; font-weight:600;">📞 +91 1824 517000</a>
+            <button class="btn-copy" onclick="copyNumber('+91 1824 517000')" style="padding:0.45rem 0.75rem; border-radius:6px; border:1px solid #cbd5e1; background:var(--surface-alt); cursor:pointer; font-size:0.82rem;">📋 Copy</button>
+          </div>
+        </div>
+        <div class="app-card" style="display: flex; flex-direction: column; padding: 1.25rem; border: 1px solid var(--border-color); border-radius: 12px; background: var(--surface-card); box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+            <span class="badge" style="background:#dcfce7; color:#16a34a; font-weight: 700; text-transform: uppercase; font-size: 0.72rem;">Helpline</span>
+            <span style="font-size: 0.75rem; color: #16a34a; font-weight: 600;">● 24x7 Toll Free</span>
+          </div>
+          <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 0.25rem;">Anti-Ragging Flying Squad</h4>
+          <div style="font-size: 0.9rem; color: #475569; font-weight: 600; margin-bottom: 0.35rem;">👤 Prof. S.K. Mahajan</div>
+          <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 1rem;">📍 Location: Block 29 (Division of Student Welfare)</div>
+          <div style="margin-top: auto; display: flex; gap: 0.5rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem;">
+            <a href="tel:+911824517999" class="btn-call" style="flex:1; text-align:center; padding:0.45rem 0.75rem; border-radius:6px; background:#0284c7; color:#fff; text-decoration:none; font-size:0.85rem; font-weight:600;">📞 +91 1824 517999</a>
+            <button class="btn-copy" onclick="copyNumber('+91 1824 517999')" style="padding:0.45rem 0.75rem; border-radius:6px; border:1px solid #cbd5e1; background:var(--surface-alt); cursor:pointer; font-size:0.82rem;">📋 Copy</button>
+          </div>
+        </div>
+        <div class="app-card" style="display: flex; flex-direction: column; padding: 1.25rem; border: 1px solid var(--border-color); border-radius: 12px; background: var(--surface-card); box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+            <span class="badge" style="background:#dcfce7; color:#16a34a; font-weight: 700; text-transform: uppercase; font-size: 0.72rem;">Helpline</span>
+            <span style="font-size: 0.75rem; color: #16a34a; font-weight: 600;">● 24x7 Available</span>
+          </div>
+          <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 0.25rem;">Women Safety Helpline & Proctorial Cell</h4>
+          <div style="font-size: 0.9rem; color: #475569; font-weight: 600; margin-bottom: 0.35rem;">👤 Dr. Harvinder Kaur</div>
+          <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 1rem;">📍 Location: Block 29 (Room 105)</div>
+          <div style="margin-top: auto; display: flex; gap: 0.5rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem;">
+            <a href="tel:+919876099887" class="btn-call" style="flex:1; text-align:center; padding:0.45rem 0.75rem; border-radius:6px; background:#0284c7; color:#fff; text-decoration:none; font-size:0.85rem; font-weight:600;">📞 +91 98760 99887</a>
+            <button class="btn-copy" onclick="copyNumber('+91 98760 99887')" style="padding:0.45rem 0.75rem; border-radius:6px; border:1px solid #cbd5e1; background:var(--surface-alt); cursor:pointer; font-size:0.82rem;">📋 Copy</button>
+          </div>
+        </div>
+        <div class="app-card" style="display: flex; flex-direction: column; padding: 1.25rem; border: 1px solid var(--border-color); border-radius: 12px; background: var(--surface-card); box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+            <span class="badge" style="background:#e0f2fe; color:#0284c7; font-weight: 700; text-transform: uppercase; font-size: 0.72rem;">Technicians</span>
+            <span style="font-size: 0.75rem; color: #16a34a; font-weight: 600;">● 08:00 AM - 08:00 PM</span>
+          </div>
+          <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 0.25rem;">Campus Senior Electrician & Power Unit</h4>
+          <div style="font-size: 0.9rem; color: #475569; font-weight: 600; margin-bottom: 0.35rem;">👤 Mr. Satnam Singh</div>
+          <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 1rem;">📍 Location: Hostel Maintenance Cell</div>
+          <div style="margin-top: auto; display: flex; gap: 0.5rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem;">
+            <a href="tel:+919888122334" class="btn-call" style="flex:1; text-align:center; padding:0.45rem 0.75rem; border-radius:6px; background:#0284c7; color:#fff; text-decoration:none; font-size:0.85rem; font-weight:600;">📞 +91 98881 22334</a>
+            <button class="btn-copy" onclick="copyNumber('+91 98881 22334')" style="padding:0.45rem 0.75rem; border-radius:6px; border:1px solid #cbd5e1; background:var(--surface-alt); cursor:pointer; font-size:0.82rem;">📋 Copy</button>
+          </div>
+        </div>
+        <div class="app-card" style="display: flex; flex-direction: column; padding: 1.25rem; border: 1px solid var(--border-color); border-radius: 12px; background: var(--surface-card); box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+            <span class="badge" style="background:#e0f2fe; color:#0284c7; font-weight: 700; text-transform: uppercase; font-size: 0.72rem;">Technicians</span>
+            <span style="font-size: 0.75rem; color: #16a34a; font-weight: 600;">● 08:00 AM - 07:00 PM</span>
+          </div>
+          <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 0.25rem;">Hostel Plumber & RO Water Tech</h4>
+          <div style="font-size: 0.9rem; color: #475569; font-weight: 600; margin-bottom: 0.35rem;">👤 Mr. Jagjit Singh</div>
+          <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 1rem;">📍 Location: Hostel Maintenance Cell</div>
+          <div style="margin-top: auto; display: flex; gap: 0.5rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem;">
+            <a href="tel:+919888133445" class="btn-call" style="flex:1; text-align:center; padding:0.45rem 0.75rem; border-radius:6px; background:#0284c7; color:#fff; text-decoration:none; font-size:0.85rem; font-weight:600;">📞 +91 98881 33445</a>
+            <button class="btn-copy" onclick="copyNumber('+91 98881 33445')" style="padding:0.45rem 0.75rem; border-radius:6px; border:1px solid #cbd5e1; background:var(--surface-alt); cursor:pointer; font-size:0.82rem;">📋 Copy</button>
+          </div>
+        </div>
+        <div class="app-card" style="display: flex; flex-direction: column; padding: 1.25rem; border: 1px solid var(--border-color); border-radius: 12px; background: var(--surface-card); box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+            <span class="badge" style="background:#e0f2fe; color:#0284c7; font-weight: 700; text-transform: uppercase; font-size: 0.72rem;">Technicians</span>
+            <span style="font-size: 0.75rem; color: #16a34a; font-weight: 600;">● 09:00 AM - 06:00 PM</span>
+          </div>
+          <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 0.25rem;">Carpenter & Furniture Maintenance</h4>
+          <div style="font-size: 0.9rem; color: #475569; font-weight: 600; margin-bottom: 0.35rem;">👤 Mr. Mohan Lal</div>
+          <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 1rem;">📍 Location: Central Maintenance Yard</div>
+          <div style="margin-top: auto; display: flex; gap: 0.5rem; border-top: 1px solid var(--border-color); padding-top: 0.75rem;">
+            <a href="tel:+919888144556" class="btn-call" style="flex:1; text-align:center; padding:0.45rem 0.75rem; border-radius:6px; background:#0284c7; color:#fff; text-decoration:none; font-size:0.85rem; font-weight:600;">📞 +91 98881 44556</a>
+            <button class="btn-copy" onclick="copyNumber('+91 98881 44556')" style="padding:0.45rem 0.75rem; border-radius:6px; border:1px solid #cbd5e1; background:var(--surface-alt); cursor:pointer; font-size:0.82rem;">📋 Copy</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. CAMPUS STORE & BUILDING INVENTORY SECTION -->
+    <section id="store-tab" class="tab-pane" role="tabpanel">
+      <div class="section-topbar">
+        <div>
+          <h2>🏬 Campus Store & Building Inventory Locator</h2>
+          <p>Find what items are available in stores & tuck shops, and check which other campus buildings have them in stock.</p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+          <input type="text" id="store-search" class="form-control" placeholder="Search items (sheet tube, kettle, padlock)..." style="width: 260px;" oninput="loadStoreItems()">
+          <select id="store-cat-filter" class="form-control" style="width: auto;" onchange="loadStoreItems()">
+            <option value="ALL">All Categories</option>
+            <option value="Stationery & Academic">Stationery & Academic</option>
+            <option value="Electronics & Tech">Electronics & Tech</option>
+            <option value="Hostel & Room Essentials">Hostel & Room Essentials</option>
+            <option value="Uniforms & Lab Gear">Uniforms & Lab Gear</option>
+            <option value="Pharmacy & Personal Care">Pharmacy & Personal Care</option>
+            <option value="Snacks & Packaged Food">Snacks & Packaged Food</option>
+          </select>
+          <select id="store-building-filter" class="form-control" style="width: auto;" onchange="loadStoreItems()">
+            <option value="ALL">All Campus Buildings</option>
+            <option value="Uni-Mall">Uni-Mall</option>
+            <option value="Block 34">Block 34 (Engg Hub)</option>
+            <option value="Block 38">Block 38 (Tech Wing)</option>
+            <option value="Block 28">Block 28 (Pharmacy/Biotech)</option>
+            <option value="Block 36">Block 36 (Library)</option>
+            <option value="BH-1">BH-1 West Lobby</option>
+            <option value="BH-3">BH-3 Opposite Mess</option>
+            <option value="BH-5">BH-5 Entrance</option>
+            <option value="GH-1">GH-1 Foyer</option>
+            <option value="GH-2">GH-2 Corridor</option>
+            <option value="Uni-Hospital">Uni-Hospital</option>
+          </select>
+          <button class="btn-secondary" onclick="openCampusStoresDirectoryModal()">
+            🏬 Campus Stores Directory
+          </button>
+        </div>
+      </div>
+
+      <div class="quick-help-banner">
+        <div>
+          <strong>📍 Cross-Building Stock Locator:</strong> Need an item immediately? Each card shows where it's stocked and lists <em>all other campus buildings</em> where you can purchase it!
+        </div>
+        <div style="font-size: 0.85rem; color: #64748b;">
+          Real-time LPU Campus Tuck Shop & Stationery Sync
+        </div>
+      </div>
+
+      <div class="cards-grid" id="store-items-grid">
+        <!-- Injected dynamically via JS -->
+      </div>
+    </section>
+
+    <!-- 9. SALON & GROOMING SECTION -->
+    <section id="salon-tab" class="tab-pane" role="tabpanel">
+      <div class="section-topbar">
+        <div>
+          <h2>💇 Campus Salon, Parlour & Grooming Appointments</h2>
+          <p>Book priority time slots for haircuts, beard styling, hair spa, facials & massages across Uni-Mall and Hostels.</p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+          <button class="btn-primary" onclick="openBookSalonModal()">
+            + Book Salon Slot Now
+          </button>
+        </div>
+      </div>
+
+      <!-- Live Salon Queue Monitor -->
+      <div class="meter-display-box" style="margin-bottom: 1.5rem; background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);">
+        <div class="meter-stat-item">
+          <span class="meter-stat-label">Currently Serving Token</span>
+          <span class="meter-stat-val highlight" id="salon-live-token">SALON-LPU-1021</span>
+          <span style="font-size: 0.78rem; color: #cbd5e1;">Live Queue Monitor</span>
+        </div>
+        <div class="meter-stat-item">
+          <span class="meter-stat-label">Next In Line</span>
+          <span class="meter-stat-val" id="salon-next-token">SALON-LPU-1022</span>
+          <span style="font-size: 0.8rem; color: #a5b4fc;">BH-3 & Uni-Mall Salons</span>
+        </div>
+        <div class="meter-stat-item">
+          <span class="meter-stat-label">Average Wait Time</span>
+          <span class="meter-stat-val" style="color: #4ade80;">0 Mins (Booked Slot)</span>
+          <span style="font-size: 0.8rem; color: #cbd5e1;">Guaranteed Chair on Arrival</span>
+        </div>
+        <div class="meter-stat-item">
+          <span class="meter-stat-label">Operating Hours</span>
+          <span class="meter-stat-val" style="font-size: 1.25rem;">08:30 AM - 10:00 PM</span>
+          <span style="font-size: 0.8rem; color: #cbd5e1;">7 Days Open Across Campus</span>
+        </div>
+      </div>
+
+      <!-- Salon Filter Bar -->
+      <div class="section-topbar" style="margin-bottom: 1rem;">
+        <div>
+          <h3>✂️ Services & Pricing Menu</h3>
+          <p>Select a service to reserve your preferred chair and stylist.</p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+          <select id="salon-branch-filter" class="form-control" style="width: auto;" onchange="loadSalonServices()">
+            <option value="ALL">All Campus Salons</option>
+            <option value="Uni-Mall Looks & Style Unisex Salon">Uni-Mall Unisex Salon (1st Floor)</option>
+            <option value="BH-1 Boys Grooming & Hair Studio">BH-1 Boys Studio (Ground Floor)</option>
+            <option value="BH-3 Campus Men's Salon & Spa">BH-3 Men's Salon & Spa</option>
+            <option value="GH-1 Glamour Girls Beauty Parlour">GH-1 Girls Parlour</option>
+            <option value="GH-2 Blossom Skin & Hair Lounge">GH-2 Skin & Hair Lounge</option>
+          </select>
+          <select id="salon-gender-filter" class="form-control" style="width: auto;" onchange="loadSalonServices()">
+            <option value="ALL">All Categories</option>
+            <option value="Unisex">Unisex Services</option>
+            <option value="Men Only">Men Only</option>
+            <option value="Women Only">Women Only</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Services Cards Grid -->
+      <div class="cards-grid" id="salon-services-grid" style="margin-bottom: 2rem;">
+        <!-- Injected via JS -->
+      </div>
+
+      <!-- Today's Bookings & Queue Table -->
+      <div class="section-topbar">
+        <div>
+          <h3>📋 Active Appointments & Today's Queue</h3>
+          <p>Track your token status and view all scheduled appointments for today.</p>
+        </div>
+        <button class="btn-secondary" onclick="loadSalonBookings()">
+          🔄 Refresh Queue
+        </button>
+      </div>
+
+      <div class="table-responsive">
+        <table class="custom-table" id="salon-bookings-table">
+          <thead>
+            <tr>
+              <th>Token #</th>
+              <th>Student Name</th>
+              <th>Hostel & Room</th>
+              <th>Salon Branch</th>
+              <th>Service</th>
+              <th>Booked Slot</th>
+              <th>Stylist</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="salon-bookings-table-body">
+            <!-- Injected via JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 10. STUDENT TO-DO & TASK PLANNER SECTION -->
+    <section id="todos-tab" class="tab-pane" role="tabpanel">
+      <div class="section-topbar">
+        <div>
+          <h2>✅ Student To-Do & Campus Task Planner</h2>
+          <p>Organize Continuous Assessments (CA), attendance goals, hostel chores, bill payments & exam prep.</p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+          <button class="btn-primary" onclick="openModal('add-todo-modal')">
+            + Detailed Task
+          </button>
+        </div>
+      </div>
+
+      <!-- To-Do Progress Bar & Summary -->
+      <div class="meter-display-box" style="margin-bottom: 1.5rem; background: linear-gradient(135deg, #064e3b 0%, #047857 100%);">
+        <div class="meter-stat-item">
+          <span class="meter-stat-label">Tasks Completion Rate</span>
+          <span class="meter-stat-val highlight" id="todo-stat-percent" style="color: #6ee7b7;">0%</span>
+          <div style="width: 100%; background: rgba(255,255,255,0.2); height: 8px; border-radius: 9999px; margin-top: 0.5rem; overflow: hidden;">
+            <div id="todo-progress-bar" style="width: 0%; height: 100%; background: #34d399; transition: width 0.3s ease;"></div>
+          </div>
+        </div>
+        <div class="meter-stat-item">
+          <span class="meter-stat-label">Pending Deadlines</span>
+          <span class="meter-stat-val" id="todo-stat-pending" style="color: #fef08a;">0 Tasks</span>
+          <span style="font-size: 0.8rem; color: #a7f3d0;">Assignments & Dues</span>
+        </div>
+        <div class="meter-stat-item">
+          <span class="meter-stat-label">Completed Today</span>
+          <span class="meter-stat-val" id="todo-stat-completed" style="color: #a7f3d0;">0 Tasks</span>
+          <span style="font-size: 0.8rem; color: #d1fae5;">Great progress!</span>
+        </div>
+        <div class="meter-stat-item">
+          <span class="meter-stat-label">Total Tracked</span>
+          <span class="meter-stat-val" id="todo-stat-total">0</span>
+          <span style="font-size: 0.8rem; color: #a7f3d0;">Campus Checklist</span>
+        </div>
+      </div>
+
+      <!-- Quick Add Task Bar -->
+      <div class="quick-help-banner" style="background: white; border-color: var(--border); box-shadow: var(--shadow-sm);">
+        <form id="quick-todo-form" onsubmit="submitQuickTodo(event)" style="display: flex; gap: 0.5rem; width: 100%; flex-wrap: wrap; align-items: center;">
+          <input type="text" id="quick-todo-title" class="form-control" placeholder="Quick add a task (e.g. Finish Compiler assignment, Clean room, Pay fee)..." style="flex: 2; min-width: 240px;" required>
+          <select id="quick-todo-category" class="form-control" style="width: auto;">
+            <option value="Assignments & CA">Assignments & CA</option>
+            <option value="Attendance & Classes">Attendance & Classes</option>
+            <option value="Bills & Dues">Bills & Dues</option>
+            <option value="Library & Academics">Library & Academics</option>
+            <option value="Hostel & Chores">Hostel & Chores</option>
+            <option value="Appointments">Appointments</option>
+            <option value="Personal Study">Personal Study</option>
+          </select>
+          <select id="quick-todo-priority" class="form-control" style="width: auto;">
+            <option value="High">🔴 High Priority</option>
+            <option value="Medium" selected>🟡 Medium Priority</option>
+            <option value="Low">🟢 Low Priority</option>
+          </select>
+          <button type="submit" class="btn-primary" style="white-space: nowrap;">
+            + Quick Add
+          </button>
+        </form>
+      </div>
+
+      <!-- Filters Bar -->
+      <div class="section-topbar" style="margin-bottom: 1rem;">
+        <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+          <span style="font-size: 0.88rem; font-weight: 700; color: #475569;">Filter By:</span>
+          <button class="badge" id="todo-filter-all" style="background:#0f172a; color:white; border:none; padding:0.4rem 0.8rem; cursor:pointer;" onclick="setTodoStatusFilter('ALL', this)">All Tasks</button>
+          <button class="badge" id="todo-filter-pending" style="background:#f1f5f9; color:#475569; border:1px solid #cbd5e1; padding:0.4rem 0.8rem; cursor:pointer;" onclick="setTodoStatusFilter('pending', this)">⏳ Pending</button>
+          <button class="badge" id="todo-filter-completed" style="background:#f1f5f9; color:#475569; border:1px solid #cbd5e1; padding:0.4rem 0.8rem; cursor:pointer;" onclick="setTodoStatusFilter('completed', this)">✓ Completed</button>
+        </div>
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          <select id="todo-category-filter" class="form-control" style="width: auto;" onchange="loadTodos()">
+            <option value="ALL">All Categories</option>
+            <option value="Assignments & CA">Assignments & CA</option>
+            <option value="Attendance & Classes">Attendance & Classes</option>
+            <option value="Bills & Dues">Bills & Dues</option>
+            <option value="Library & Academics">Library & Academics</option>
+            <option value="Hostel & Chores">Hostel & Chores</option>
+            <option value="Appointments">Appointments</option>
+            <option value="Personal Study">Personal Study</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Tasks List Container -->
+      <div id="todo-items-list" style="display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 2rem;">
+        <!-- Injected via JS -->
+      </div>
+    </section>
+ 
+    <!-- 11. HOSTEL & SERVICES FEEDBACK SECTION -->
+    <section id="feedback-tab" class="tab-pane" role="tabpanel">
+      <div class="section-topbar">
+        <div>
+          <h2>⭐ Hostel & Facilities Feedback & Rating Desk</h2>
+          <p>Submit ratings, review service checklists (cleaning, mess, electricity, laundry) & track administrative actions.</p>
+        </div>
+        <div class="student-domain-tag">
+          <span class="lock-icon">🔒</span>
+          <span>Private Student Domain: <strong id="feedback-student-display">Sarthak Mishra (12204561)</strong></span>
+        </div>
+      </div>
+
+      <div class="feedback-grid-container">
+        <!-- Left: Feedback Submission Form -->
+        <div class="feedback-card-panel">
+          <div class="feedback-panel-header">
+            <h3>📝 New Facility Review & Rating</h3>
+            <span class="badge-status-pill">Warden Review System</span>
+          </div>
+
+          <form id="hostel-feedback-form" onsubmit="submitHostelFeedback(event)">
+            <!-- Services Checklist Selection -->
+            <div class="form-group" style="margin-bottom: 1.25rem;">
+              <label class="form-section-title">Select Services to Review (Checklist) *</label>
+              <div class="feedback-services-checklist">
+                <label class="checklist-item">
+                  <input type="checkbox" name="services_check" value="Room Cleaning & Housekeeping" checked>
+                  <span class="chk-box"></span>
+                  <span class="chk-label">🧹 Room Cleaning & Dusting</span>
+                </label>
+                <label class="checklist-item">
+                  <input type="checkbox" name="services_check" value="Mess Catering & Food Quality" checked>
+                  <span class="chk-box"></span>
+                  <span class="chk-label">🍲 Mess Food Quality & Hygiene</span>
+                </label>
+                <label class="checklist-item">
+                  <input type="checkbox" name="services_check" value="Electricity & Meter Accuracy">
+                  <span class="chk-box"></span>
+                  <span class="chk-label">⚡ Electricity & Meter Reading</span>
+                </label>
+                <label class="checklist-item">
+                  <input type="checkbox" name="services_check" value="Water Supply & Plumbing">
+                  <span class="chk-box"></span>
+                  <span class="chk-label">🚰 Water Supply & Geysers</span>
+                </label>
+                <label class="checklist-item">
+                  <input type="checkbox" name="services_check" value="Wi-Fi & Internet Connectivity">
+                  <span class="chk-box"></span>
+                  <span class="chk-label">📶 Hostel Wi-Fi Network</span>
+                </label>
+                <label class="checklist-item">
+                  <input type="checkbox" name="services_check" value="Night Security & Warden Support">
+                  <span class="chk-box"></span>
+                  <span class="chk-label">🛡️ Security & Warden Helpdesk</span>
+                </label>
+                <label class="checklist-item">
+                  <input type="checkbox" name="services_check" value="Departmental Store & Medical Delivery">
+                  <span class="chk-box"></span>
+                  <span class="chk-label">🏬 Store & Medical Room Delivery</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Star Rating Input -->
+            <div class="form-group" style="margin-bottom: 1.25rem;">
+              <label class="form-section-title">Overall Facility Rating (1 to 5 Stars) *</label>
+              <div class="star-rating-selector" id="star-rating-selector">
+                <input type="radio" id="star5" name="rating_score" value="5" checked><label for="star5" title="5 stars - Excellent">★</label>
+                <input type="radio" id="star4" name="rating_score" value="4"><label for="star4" title="4 stars - Good">★</label>
+                <input type="radio" id="star3" name="rating_score" value="3"><label for="star3" title="3 stars - Average">★</label>
+                <input type="radio" id="star2" name="rating_score" value="2"><label for="star2" title="2 stars - Poor">★</label>
+                <input type="radio" id="star1" name="rating_score" value="1"><label for="star1" title="1 star - Very Bad">★</label>
+              </div>
+              <span class="rating-label-hint" id="rating-label-hint">5 Stars - Outstanding Experience</span>
+            </div>
+
+            <!-- Category & Recommendation -->
+            <div class="form-row">
+              <div class="form-group">
+                <label for="fb-category">Primary Category</label>
+                <select id="fb-category" class="form-control">
+                  <option value="Mess Food & Nutrition">Mess Food & Catering</option>
+                  <option value="Housekeeping & Sanitation">Housekeeping & Floor Sanitation</option>
+                  <option value="Electricity & Energy Maintenance">Electricity & Power Supply</option>
+                  <option value="General Hostel Infrastructure">General Hostel Infrastructure</option>
+                  <option value="Caretaking & Security Support">Caretaking & Security Support</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="fb-recommend">Would you recommend this hostel block?</label>
+                <select id="fb-recommend" class="form-control">
+                  <option value="1">Yes, definitely (Positive)</option>
+                  <option value="0">Needs improvement (Issues reported)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Detailed Feedback Description -->
+            <div class="form-group" style="margin-bottom: 1.25rem;">
+              <label for="fb-description" class="form-section-title">Detailed Feedback / Grievance Description *</label>
+              <textarea id="fb-description" class="form-control feedback-textarea" rows="4" placeholder="Write your specific feedback or compliments regarding food taste, cleaning timeliness, electrician responsiveness, or meter readings..." required></textarea>
+              <span class="char-count-hint">Your feedback goes directly to your Hostel Warden & Dean of Student Affairs.</span>
+            </div>
+
+            <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; padding: 0.85rem; font-size: 1rem;">
+              🚀 Submit Feedback & Ratings
+            </button>
+          </form>
+        </div>
+
+        <!-- Right: Past Feedbacks & Actions by Administration -->
+        <div class="feedback-card-panel">
+          <div class="feedback-panel-header">
+            <h3>📋 My Feedback History & Warden Actions</h3>
+            <button class="btn-secondary" onclick="loadHostelFeedbacks()" style="padding: 0.4rem 0.8rem; font-size: 0.82rem;">
+              🔄 Refresh List
+            </button>
+          </div>
+
+          <div id="feedback-history-list" class="feedback-history-scroll">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+  
+    <!-- UNIHOSPITAL OPD & DOCTOR APPOINTMENTS SECTION -->
+    <section id="unihospital-tab" class="tab-pane" role="tabpanel">
+      <div class="section-topbar">
+        <div>
+          <h2>🏥 Uni-Hospital - University Health Centre & Specialist OPD</h2>
+          <p>Book consultation appointments with resident specialist doctors at Uni-Hospital (Near Gate 4).</p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+          <a href="tel:+911824517100" class="btn-call" style="background:#dc2626; color:white; padding:0.55rem 1.1rem; border-radius:8px; text-decoration:none; font-weight:700; display:inline-flex; align-items:center; gap:0.4rem;">
+            🚑 24x7 Ambulance: 517100
+          </a>
+          <button class="btn-primary" onclick="openBookDoctorModal()">
+            + Book Doctor Appointment
+          </button>
+        </div>
+      </div>
+
+      <div class="quick-help-banner">
+        <div>
+          <strong>📍 Uni-Hospital Campus Information:</strong> Full-fledged hospital with 24x7 Emergency Casualty, Pharmacy, Pathology Lab & In-Patient Ward. General medical checkups and prescriptions are 100% free for all registered LPU students.
+        </div>
+        <div style="font-size: 0.85rem; color: #64748b;">
+          Reception Desk: <strong>+91 1824 517102</strong>
+        </div>
+      </div>
+
+      <!-- Doctors Directory Filter -->
+      <div class="section-topbar" style="margin-top: 1.5rem; margin-bottom: 1rem;">
+        <div>
+          <h3>👨‍⚕️ Resident Specialist Doctors Directory</h3>
+          <p>Choose your doctor and reserve a guaranteed queue token.</p>
+        </div>
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          <label style="font-size: 0.85rem; font-weight: 600;">Department:</label>
+          <select id="unihospital-dept-filter" class="form-control" style="width: auto;" onchange="loadUniHospitalDoctors()">
+            <option value="ALL">All Departments</option>
+            <option value="General Medicine">General Medicine</option>
+            <option value="Orthopedics">Orthopedics & Sports</option>
+            <option value="ENT Department">ENT (Ear, Nose, Throat)</option>
+            <option value="Dermatology">Dermatology (Skin & Hair)</option>
+            <option value="Dental Sciences">Dental Sciences</option>
+            <option value="Mental Wellness">Mental Wellness & Counseling</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Doctors Cards Grid -->
+      <div class="cards-grid" id="unihospital-doctors-grid" style="margin-bottom: 2rem;">
+        <!-- Injected via JS -->
+      </div>
+
+      <!-- Confirmed Student Appointments Table -->
+      <div class="section-topbar">
+        <div>
+          <h3>📋 My Uni-Hospital OPD Appointments & Queue</h3>
+          <p>Present your appointment token code at the Uni-Hospital reception counter.</p>
+        </div>
+        <button class="btn-secondary" onclick="loadUniHospitalAppointments()">
+          🔄 Refresh Queue
+        </button>
+      </div>
+
+      <div class="table-responsive">
+        <table class="custom-table" id="unihospital-appointments-table">
+          <thead>
+            <tr>
+              <th>OPD Token #</th>
+              <th>Doctor Name</th>
+              <th>Department</th>
+              <th>Date & Slot</th>
+              <th>Student & Room</th>
+              <th>Chief Symptoms</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="unihospital-appointments-tbody">
+            <!-- Injected via JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    
+
+  </main>
+  </div>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- 1. Schedule Cleaning Modal -->
+  <div class="modal-overlay" id="cleaning-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Schedule Hostel Cleaning</h3>
+        <button class="modal-close-btn" onclick="closeModal('cleaning-modal')">&times;</button>
+      </div>
+      <form id="cleaning-form" onsubmit="submitCleaningRequest(event)">
+        <div class="modal-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="clean-name">Student Full Name *</label>
+              <input type="text" id="clean-name" class="form-control" required placeholder="e.g. Sarthak Sharma">
+            </div>
+            <div class="form-group">
+              <label for="clean-reg">Registration No. *</label>
+              <input type="text" id="clean-reg" class="form-control" required placeholder="e.g. 12204561">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="clean-block">Hostel Block *</label>
+              <select id="clean-block" class="form-control" required>
+                <option value="BH-1">BH-1</option>
+                <option value="BH-2">BH-2</option>
+                <option value="BH-3" selected>BH-3</option>
+                <option value="BH-4">BH-4</option>
+                <option value="BH-5">BH-5</option>
+                <option value="BH-6">BH-6</option>
+                <option value="GH-1">GH-1</option>
+                <option value="GH-2">GH-2</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="clean-room">Room Number *</label>
+              <input type="text" id="clean-room" class="form-control" required placeholder="e.g. 412">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="clean-type">Service Type</label>
+            <select id="clean-type" class="form-control">
+              <option value="Room Deep Cleaning & Mopping">Room Deep Cleaning & Mopping</option>
+              <option value="Washroom Sanitization">Washroom Sanitization</option>
+              <option value="Floor Mopping & Dusting">Floor Mopping & Dusting</option>
+              <option value="Balcony & Window Wash">Balcony & Window Wash</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="clean-slot">Preferred Slot</label>
+            <select id="clean-slot" class="form-control">
+              <option value="09:00 AM - 11:00 AM">09:00 AM - 11:00 AM</option>
+              <option value="11:00 AM - 01:00 PM">11:00 AM - 01:00 PM</option>
+              <option value="02:00 PM - 04:00 PM">02:00 PM - 04:00 PM</option>
+              <option value="04:00 PM - 06:00 PM">04:00 PM - 06:00 PM</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="clean-notes">Special Instructions (Optional)</label>
+            <textarea id="clean-notes" class="form-control" rows="2" placeholder="e.g. Please sanitize desk and door handles"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" onclick="closeModal('cleaning-modal')">Cancel</button>
+          <button type="submit" class="btn-primary">Confirm Schedule</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. Pay Electricity Bill Modal -->
+  <div class="modal-overlay" id="pay-bill-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Pay Room Electricity Bill</h3>
+        <button class="modal-close-btn" onclick="closeModal('pay-bill-modal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="margin-bottom: 1rem; color: var(--text-muted);">
+          Simulate online fee portal payment via Net Banking, UPI, or Debit Card.
+        </p>
+        <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 1rem; margin-bottom: 1.25rem;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem;">
+            <span>Room:</span>
+            <strong id="pay-modal-room">BH-3, Room 412</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem;">
+            <span>Units Consumed:</span>
+            <strong id="pay-modal-units">115.00 kWh</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 1.1rem; color: var(--primary);">
+            <span>Payable Amount:</span>
+            <strong id="pay-modal-amount">₹862.50</strong>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Select Payment Mode</label>
+          <select id="pay-mode-select" class="form-control">
+            <option value="LPU UMS / Fee Portal Gateway">LPU UMS / Fee Portal Gateway</option>
+            <option value="UPI (Google Pay / PhonePe / Paytm)">UPI (Google Pay / PhonePe / Paytm)</option>
+            <option value="Net Banking (SBI / HDFC / PNB)">Net Banking (SBI / HDFC / PNB)</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" onclick="closeModal('pay-bill-modal')">Cancel</button>
+        <button type="button" class="btn-success" onclick="confirmBillPayment()">Authorize Payment</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Le Brocs Cart & Order Modal -->
+  <div class="modal-overlay" id="cart-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Your Le Brocs Food Cart</h3>
+        <button class="modal-close-btn" onclick="closeModal('cart-modal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="cart-items-list" style="margin-bottom: 1.25rem;">
+          <!-- Cart items injected here -->
+        </div>
+
+        <div style="border-top: 1px solid var(--border); padding-top: 1rem;">
+          <h4 style="font-size: 0.95rem; margin-bottom: 0.75rem; color: var(--navy);">Delivery Details:</h4>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="order-name">Your Name *</label>
+              <input type="text" id="order-name" class="form-control" required placeholder="Full Name">
+            </div>
+            <div class="form-group">
+              <label for="order-phone">Phone Number *</label>
+              <input type="text" id="order-phone" class="form-control" required placeholder="10-digit mobile">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="order-block">Hostel Block *</label>
+              <select id="order-block" class="form-control">
+                <option value="BH-1">BH-1</option>
+                <option value="BH-2">BH-2</option>
+                <option value="BH-3" selected>BH-3</option>
+                <option value="BH-4">BH-4</option>
+                <option value="BH-5">BH-5</option>
+                <option value="BH-6">BH-6</option>
+                <option value="GH-1">GH-1</option>
+                <option value="GH-2">GH-2</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="order-room">Room No *</label>
+              <input type="text" id="order-room" class="form-control" required placeholder="e.g. 412">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="order-payment">Payment Method</label>
+            <select id="order-payment" class="form-control">
+              <option value="Cash on Delivery">Cash on Delivery (Pay in Hostel)</option>
+              <option value="UPI on Delivery">UPI QR on Delivery</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div style="margin-right: auto; font-weight: 700; font-size: 1.1rem;">
+          Total: <span id="cart-total-modal" style="color: var(--primary);">₹0</span>
+        </div>
+        <button type="button" class="btn-secondary" onclick="closeModal('cart-modal')">Continue Browsing</button>
+        <button type="button" class="btn-primary" onclick="submitFoodOrder()">Place Order</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Post Marketplace Item Modal -->
+  <div class="modal-overlay" id="post-item-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>List Second-Hand Item for Sale</h3>
+        <button class="modal-close-btn" onclick="closeModal('post-item-modal')">&times;</button>
+      </div>
+      <form id="marketplace-form" onsubmit="submitMarketplaceItem(event)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="market-title">Item Title *</label>
+            <input type="text" id="market-title" class="form-control" required placeholder="e.g. Symphony Room Cooler with trolley">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="market-category">Category *</label>
+              <select id="market-category" class="form-control" required>
+                <option value="Hostel Essentials">Hostel Essentials</option>
+                <option value="Electronics & Study">Electronics & Study</option>
+                <option value="Vehicles & Transport">Vehicles & Transport</option>
+                <option value="Appliances">Appliances</option>
+                <option value="Civil & Mech Gear">Civil & Mech Gear</option>
+                <option value="Textbooks">Textbooks</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="market-condition">Condition *</label>
+              <select id="market-condition" class="form-control">
+                <option value="Like New">Like New</option>
+                <option value="Excellent Condition">Excellent Condition</option>
+                <option value="Good Condition">Good Condition</option>
+                <option value="Fair Condition">Fair Condition</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="market-price">Selling Price (₹) *</label>
+              <input type="number" id="market-price" class="form-control" required placeholder="1800">
+            </div>
+            <div class="form-group">
+              <label for="market-orig-price">Original MRP (₹)</label>
+              <input type="number" id="market-orig-price" class="form-control" placeholder="3800">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="market-desc">Description & Features</label>
+            <textarea id="market-desc" class="form-control" rows="2" placeholder="Describe working condition, age, reasons for selling..."></textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="market-seller">Your Name & Year *</label>
+              <input type="text" id="market-seller" class="form-control" required placeholder="e.g. Rahul (4th Year CSE)">
+            </div>
+            <div class="form-group">
+              <label for="market-block">Hostel Block *</label>
+              <select id="market-block" class="form-control">
+                <option value="BH-1">BH-1</option>
+                <option value="BH-2">BH-2</option>
+                <option value="BH-3" selected>BH-3</option>
+                <option value="BH-4">BH-4</option>
+                <option value="BH-5">BH-5</option>
+                <option value="GH-1">GH-1</option>
+                <option value="GH-2">GH-2</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="market-room">Room No *</label>
+              <input type="text" id="market-room" class="form-control" required placeholder="e.g. 210">
+            </div>
+            <div class="form-group">
+              <label for="market-phone">Contact Phone *</label>
+              <input type="text" id="market-phone" class="form-control" required placeholder="10-digit number">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" onclick="closeModal('post-item-modal')">Cancel</button>
+          <button type="submit" class="btn-primary">Post Item</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 5. Reserve Library Book Modal -->
+  <div class="modal-overlay" id="reserve-book-modal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>Reserve Physical Book (Block 36 Library)</h3>
+        <button class="modal-close-btn" onclick="closeModal('reserve-book-modal')">&times;</button>
+      </div>
+      <form id="reserve-book-form" onsubmit="submitBookReservation(event)">
+        <input type="hidden" id="reserve-book-id">
+        <div class="modal-body">
+          <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 1rem; margin-bottom: 1.25rem;">
+            <div style="font-weight: 700; color: var(--navy); font-size: 1.05rem;" id="reserve-book-title"></div>
+            <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.2rem;" id="reserve-book-location"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="reserve-name">Student Full Name *</label>
+              <input type="text" id="reserve-name" class="form-control" required placeholder="Your Name">
+            </div>
+            <div class="form-group">
+              <label for="reserve-reg">Registration No. *</label>
+              <input type="text" id="reserve-reg" class="form-control" required placeholder="e.g. 12204561">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="reserve-block">Hostel Block *</label>
+              <select id="reserve-block" class="form-control">
+                <option value="BH-1">BH-1</option>
+                <option value="BH-2">BH-2</option>
+                <option value="BH-3" selected>BH-3</option>
+                <option value="BH-4">BH-4</option>
+                <option value="BH-5">BH-5</option>
+                <option value="GH-1">GH-1</option>
+                <option value="GH-2">GH-2</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="reserve-room">Room No *</label>
+              <input type="text" id="reserve-room" class="form-control" required placeholder="e.g. 412">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" onclick="closeModal('reserve-book-modal')">Cancel</button>
+          <button type="submit" class="btn-primary">Confirm 48h Hold</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 6. Cross-Building Store Availability Modal -->
+  <div class="modal-overlay" id="store-availability-modal">
+    <div class="modal-box" style="max-width: 650px;">
+      <div class="modal-header">
+        <div>
+          <h3 id="avail-modal-item-name">Item Building Availability</h3>
+          <div style="font-size: 0.82rem; color: #64748b;" id="avail-modal-cat-price"></div>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('store-availability-modal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.88rem; color: #475569; margin-bottom: 1rem;">
+          Showing all shops & campus buildings stocking this item right now:
+        </p>
+        <div class="table-responsive">
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th>Campus Building</th>
+                <th>Store / Tuck Shop</th>
+                <th>Location / Floor</th>
+                <th>Current Stock</th>
+              </tr>
+            </thead>
+            <tbody id="avail-modal-table-body">
+              <!-- Injected via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" onclick="closeModal('store-availability-modal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. All Campus Stores Directory Modal -->
+  <div class="modal-overlay" id="all-stores-directory-modal">
+    <div class="modal-box" style="max-width: 700px;">
+      <div class="modal-header">
+        <h3>Campus Tuck Shops & Stores Directory</h3>
+        <button class="modal-close-btn" onclick="closeModal('all-stores-directory-modal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.88rem; color: #475569; margin-bottom: 1rem;">
+          Official stationery, grocery & essentials shops across academic blocks and hostels:
+        </p>
+        <div class="table-responsive">
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th>Building</th>
+                <th>Store Name</th>
+                <th>Floor / Area</th>
+                <th>Daily Timings</th>
+                <th>Helpline</th>
+              </tr>
+            </thead>
+            <tbody id="all-stores-table-body">
+              <!-- Injected via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" onclick="closeModal('all-stores-directory-modal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. Interactive Campus Calendar Modal -->
+  <div class="modal-overlay" id="campus-calendar-modal">
+    <div class="modal-box" style="max-width: 680px;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <span style="font-size: 1.3rem;">📅</span>
+          <div>
+            <h3 style="font-size: 1.15rem; color: var(--navy); margin: 0;">LPU Campus & Hostel Calendar</h3>
+            <p style="font-size: 0.78rem; color: #64748b; margin-top: 0.15rem;">Academic events, mess specials, bill cycles & hostel timings</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('campus-calendar-modal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="calendar-wrap">
+          <!-- Month/Year Navigation -->
+          <div class="calendar-nav-bar">
+            <button class="calendar-nav-btn" onclick="changeCalendarMonth(-1)">&larr;</button>
+            <h4 id="cal-month-year-label">September 2026</h4>
+            <button class="calendar-nav-btn" onclick="changeCalendarMonth(1)">&rarr;</button>
+          </div>
+
+          <!-- Calendar Grid -->
+          <div class="calendar-days-grid" id="calendar-days-grid">
+            <!-- Day labels and date cells injected via JS -->
+          </div>
+
+          <!-- Schedule & Events for Selected Date -->
+          <div class="calendar-events-box" id="calendar-events-box">
+            <h5 id="cal-selected-date-label">📌 Campus Schedule & Highlights</h5>
+            <div id="cal-events-list">
+              <!-- Event cards injected via JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-primary" onclick="goToTodayCalendar()">Jump to Today</button>
+        <button type="button" class="btn-secondary" onclick="closeModal('campus-calendar-modal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. Book Salon Slot Modal -->
+  <div class="modal-overlay" id="book-salon-modal">
+    <div class="modal-box" style="max-width: 580px;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <span style="font-size: 1.3rem;">💇</span>
+          <div>
+            <h3 style="margin: 0; font-size: 1.15rem;">Book Campus Salon & Grooming Slot</h3>
+            <p style="font-size: 0.78rem; color: #64748b; margin: 0;">Instant Token • Guaranteed Priority Seat</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('book-salon-modal')">&times;</button>
+      </div>
+      <form id="book-salon-form" onsubmit="submitSalonBooking(event)">
+        <div class="modal-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="salon-student-name">Student Full Name *</label>
+              <input type="text" id="salon-student-name" class="form-control" required placeholder="Full Name">
+            </div>
+            <div class="form-group">
+              <label for="salon-student-reg">Registration No. *</label>
+              <input type="text" id="salon-student-reg" class="form-control" required placeholder="e.g. 12204561">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="salon-student-phone">Phone Number *</label>
+              <input type="text" id="salon-student-phone" class="form-control" required placeholder="10-digit mobile">
+            </div>
+            <div class="form-group">
+              <label for="salon-student-block">Hostel Block & Room *</label>
+              <div style="display: flex; gap: 0.4rem;">
+                <select id="salon-student-block" class="form-control" style="width: 100px;">
+                  <option value="BH-1">BH-1</option>
+                  <option value="BH-2">BH-2</option>
+                  <option value="BH-3" selected>BH-3</option>
+                  <option value="BH-4">BH-4</option>
+                  <option value="BH-5">BH-5</option>
+                  <option value="GH-1">GH-1</option>
+                  <option value="GH-2">GH-2</option>
+                </select>
+                <input type="text" id="salon-student-room" class="form-control" required placeholder="Room 412">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="salon-select-branch">Choose Salon Branch *</label>
+            <select id="salon-select-branch" class="form-control" required>
+              <option value="Uni-Mall Looks & Style Unisex Salon">Uni-Mall Looks & Style Unisex Salon (1st Floor Shop 104)</option>
+              <option value="BH-1 Boys Grooming & Hair Studio">BH-1 Boys Grooming & Hair Studio (Ground Floor)</option>
+              <option value="BH-3 Campus Men's Salon & Spa" selected>BH-3 Campus Men's Salon & Spa (Ground Floor)</option>
+              <option value="GH-1 Glamour Girls Beauty Parlour">GH-1 Glamour Girls Beauty Parlour (Central Wing)</option>
+              <option value="GH-2 Blossom Skin & Hair Lounge">GH-2 Blossom Skin & Hair Lounge (Ground Floor)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="salon-select-service">Select Service *</label>
+            <select id="salon-select-service" class="form-control" required>
+              <!-- Populated via JS -->
+            </select>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="salon-book-date">Appointment Date *</label>
+              <input type="date" id="salon-book-date" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label for="salon-book-slot">Preferred Time Slot *</label>
+              <select id="salon-book-slot" class="form-control" required>
+                <option value="09:30 AM - 10:00 AM">09:30 AM - 10:00 AM</option>
+                <option value="10:30 AM - 11:00 AM">10:30 AM - 11:00 AM</option>
+                <option value="11:30 AM - 12:00 PM">11:30 AM - 12:00 PM</option>
+                <option value="02:00 PM - 02:30 PM">02:00 PM - 02:30 PM</option>
+                <option value="03:30 PM - 04:00 PM">03:30 PM - 04:00 PM</option>
+                <option value="05:00 PM - 05:30 PM" selected>05:00 PM - 05:30 PM</option>
+                <option value="06:30 PM - 07:00 PM">06:30 PM - 07:00 PM</option>
+                <option value="08:00 PM - 08:30 PM">08:00 PM - 08:30 PM</option>
+                <option value="09:00 PM - 09:30 PM">09:00 PM - 09:30 PM</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="salon-stylist-pref">Stylist Preference (Optional)</label>
+            <select id="salon-stylist-pref" class="form-control">
+              <option value="Any Available Stylist">Any Available Stylist (Fastest)</option>
+              <option value="Senior Stylist Vikram">Senior Stylist Vikram</option>
+              <option value="Hair Stylist Rohit">Hair Stylist Rohit</option>
+              <option value="Skin & Spa Specialist Pooja">Skin & Spa Specialist Pooja</option>
+              <option value="Beauty Stylist Sneha">Beauty Stylist Sneha</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" onclick="closeModal('book-salon-modal')">Cancel</button>
+          <button type="submit" class="btn-primary">Confirm & Generate Token</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 10. Add To-Do Task Modal -->
+  <div class="modal-overlay" id="add-todo-modal">
+    <div class="modal-box" style="max-width: 520px;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <span style="font-size: 1.3rem;">✅</span>
+          <div>
+            <h3 style="margin: 0; font-size: 1.15rem;">Create New Academic / Hostel Task</h3>
+            <p style="font-size: 0.78rem; color: #64748b; margin: 0;">Stay organized with deadlines and reminders</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('add-todo-modal')">&times;</button>
+      </div>
+      <form id="add-todo-form" onsubmit="submitDetailedTodo(event)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="todo-modal-title">Task Title / Description *</label>
+            <input type="text" id="todo-modal-title" class="form-control" required placeholder="e.g. Submit Software Engg Assignment in UMS">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="todo-modal-category">Category *</label>
+              <select id="todo-modal-category" class="form-control" required>
+                <option value="Assignments & CA">Assignments & CA</option>
+                <option value="Attendance & Classes">Attendance & Classes</option>
+                <option value="Bills & Dues">Bills & Dues</option>
+                <option value="Library & Academics">Library & Academics</option>
+                <option value="Hostel & Chores">Hostel & Chores</option>
+                <option value="Appointments">Appointments</option>
+                <option value="Personal Study">Personal Study</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="todo-modal-priority">Priority Level *</label>
+              <select id="todo-modal-priority" class="form-control" required>
+                <option value="High">🔴 High Priority</option>
+                <option value="Medium" selected>🟡 Medium Priority</option>
+                <option value="Low">🟢 Low Priority</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="todo-modal-date">Due Date *</label>
+              <input type="date" id="todo-modal-date" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label for="todo-modal-time">Due Time</label>
+              <input type="text" id="todo-modal-time" class="form-control" value="11:59 PM" placeholder="e.g. 05:00 PM">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" onclick="closeModal('add-todo-modal')">Cancel</button>
+          <button type="submit" class="btn-primary">Add Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 10. Student Private Domain Authentication Modal -->
+  <div class="modal-overlay" id="student-login-modal">
+    <div class="modal-box" style="max-width: 460px;">
+      <div class="modal-header" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: white;">
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          <span style="font-size: 1.4rem;">🔐</span>
+          <div>
+            <h3 style="font-size: 1.15rem; color: white;">Student Private Domain Access</h3>
+            <p style="font-size: 0.76rem; color: #94a3b8;">Restricted Access • Resident Single Sign-On</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" style="color: white;" onclick="closeModal('student-login-modal')">&times;</button>
+      </div>
+
+      <div class="demo-credential-box">
+        <div class="demo-credential-title">
+          <span>⚡ DEMO LOGIN CREDENTIALS</span>
+          <button type="button" class="btn-copy-demo" onclick="fillDemoCredentials()">Use Demo Account</button>
+        </div>
+        <div class="demo-credential-details">
+          <p><strong>Registration ID:</strong> <code>12204561</code></p>
+          <p><strong>Password:</strong> <code>lpu@1234</code></p>
+          <p class="demo-student-hint">Student: Sarthak Mishra (BH-3, Room 412)</p>
+        </div>
+      </div>
+
+      <form id="student-login-form" onsubmit="handleStudentLogin(event)">
+        <div class="modal-body">
+          <div class="form-group" style="margin-bottom: 1rem;">
+            <label for="login-reg-no">University Registration ID *</label>
+            <input type="text" id="login-reg-no" class="form-control" placeholder="e.g. 12204561" required autofocus>
+          </div>
+          <div class="form-group" style="margin-bottom: 1rem;">
+            <label for="login-password">Secret Password *</label>
+            <input type="password" id="login-password" class="form-control" placeholder="Enter your password" required>
+          </div>
+          <div class="private-domain-notice">
+            <span style="font-size: 1rem;">🛡️</span>
+            <span>By logging in, all room cleaning, mess complaints, and bill payments will be restricted exclusively to your own registration ID domain.</span>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" onclick="closeModal('student-login-modal')">Close</button>
+          <button type="submit" class="btn-primary" style="padding: 0.65rem 1.5rem;">Log In to Domain</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Emergency & Wardens Slide-out Drawer -->
+  <div class="drawer-backdrop" id="drawer-backdrop" onclick="toggleDrawer(false)"></div>
+  <aside class="emergency-drawer" id="emergency-drawer" aria-label="Campus Directory Speed Dial">
+    <div class="drawer-header">
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <span style="font-size: 1.3rem;">🚨</span>
+        <h3 style="font-size: 1.1rem;">LPU Speed-Dial Directory</h3>
+      </div>
+      <button class="modal-close-btn" style="color: white;" onclick="toggleDrawer(false)">&times;</button>
+    </div>
+    <div class="drawer-body" id="drawer-contacts-list">
+      <!-- Injected via JS -->
+    </div>
+  </aside>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container"></div>
+
+  <script src="js/main.js"></script>
+
+  <!-- Uni-Hospital Book Doctor Appointment Modal -->
+  <div class="modal-overlay" id="book-doctor-modal">
+    <div class="modal-box" style="max-width: 580px;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <span style="font-size: 1.3rem;">🏥</span>
+          <div>
+            <h3 style="margin: 0; font-size: 1.15rem;">Book Uni-Hospital Doctor Appointment</h3>
+            <p style="font-size: 0.78rem; color: #64748b; margin: 0;">Instant OPD Token • Free Consultation for Students</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal('book-doctor-modal')">&times;</button>
+      </div>
+      <form id="book-doctor-form" onsubmit="submitDoctorAppointment(event)">
+        <div class="modal-body">
+          <div class="form-group" style="margin-bottom: 0.9rem;">
+            <label for="doctor-select">Select Doctor & Department *</label>
+            <select id="doctor-select" class="form-control" required onchange="handleDoctorSelectChange()">
+              <!-- Injected via JS -->
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="doctor-appointment-date">Appointment Date *</label>
+              <input type="date" id="doctor-appointment-date" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label for="doctor-time-slot">Preferred Time Slot *</label>
+              <select id="doctor-time-slot" class="form-control" required>
+                <option value="09:30 AM - 10:00 AM">09:30 AM - 10:00 AM</option>
+                <option value="10:30 AM - 11:00 AM">10:30 AM - 11:00 AM</option>
+                <option value="11:30 AM - 12:00 PM">11:30 AM - 12:00 PM</option>
+                <option value="12:30 PM - 01:00 PM">12:30 PM - 01:00 PM</option>
+                <option value="02:30 PM - 03:00 PM">02:30 PM - 03:00 PM</option>
+                <option value="03:30 PM - 04:00 PM">03:30 PM - 04:00 PM</option>
+                <option value="04:30 PM - 05:00 PM">04:30 PM - 05:00 PM</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="doctor-patient-name">Student Full Name *</label>
+              <input type="text" id="doctor-patient-name" class="form-control" value="Sarthak Mishra" required>
+            </div>
+            <div class="form-group">
+              <label for="doctor-patient-reg">Registration No. *</label>
+              <input type="text" id="doctor-patient-reg" class="form-control" value="12204561" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="doctor-patient-block">Hostel & Room *</label>
+              <input type="text" id="doctor-patient-block" class="form-control" value="BH-3, Room 412" required>
+            </div>
+            <div class="form-group">
+              <label for="doctor-patient-phone">Phone Number *</label>
+              <input type="text" id="doctor-patient-phone" class="form-control" value="9876543210" required>
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom: 0.5rem;">
+            <label for="doctor-symptoms">Chief Symptoms / Reason for Visit *</label>
+            <textarea id="doctor-symptoms" class="form-control" rows="2" placeholder="e.g. Mild fever, persistent headache, throat soreness since yesterday..." required></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" onclick="closeModal('book-doctor-modal')">Cancel</button>
+          <button type="submit" class="btn-primary" style="padding: 0.65rem 1.4rem;">Confirm OPD Slot 🏥</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apex University - Hostel & Mess Central Portal</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex">
+
+  <!-- LEFT-MOST VERTICAL SIDEBAR -->
+  <aside id="sidebar" class="w-72 bg-white border-r border-slate-200 flex flex-col fixed inset-y-0 left-0 z-30 transition-transform duration-300 md:translate-x-0 -translate-x-full">
+    <!-- Brand / Header -->
+    <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white shadow-md shadow-blue-500/20">
+          <i data-lucide="building-2" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h1 class="font-bold text-slate-900 leading-tight">CampusHostel</h1>
+          <span class="text-xs text-slate-500 font-medium">Resident Services</span>
+        </div>
+      </div>
+      <button id="closeSidebarBtn" class="md:hidden text-slate-400 hover:text-slate-600 p-1">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <!-- Student Quick Profile Card -->
+    <div class="p-4 mx-3 mt-3 bg-gradient-to-br from-blue-50 to-indigo-50/50 rounded-xl border border-blue-100/80">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-blue-600 text-white font-semibold flex items-center justify-center text-sm shadow-sm">
+          SM
+        </div>
+        <div class="overflow-hidden">
+          <p class="text-sm font-semibold text-slate-900 truncate">Sarthak Mishra</p>
+          <p class="text-xs text-blue-600 font-medium">Block A • Room 408</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vertical Navigation List -->
+    <div class="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+      <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">Hostel Facilities</div>
+
+      <a href="#cleaning" class="sidebar-link active" data-nav="cleaning">
+        <i data-lucide="sparkles" class="w-5 h-5"></i>
+        <span class="flex-1">Room Cleaning</span>
+        <span class="badge-indicator text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 font-medium">Slots</span>
+      </a>
+
+      <a href="#mess" class="sidebar-link" data-nav="mess">
+        <i data-lucide="utensils" class="w-5 h-5"></i>
+        <span class="flex-1">Mess Today Menu</span>
+        <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-medium">Live</span>
+      </a>
+
+      <a href="#electricity" class="sidebar-link" data-nav="electricity">
+        <i data-lucide="zap" class="w-5 h-5"></i>
+        <span class="flex-1">Electricity Meter</span>
+        <span class="text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 font-medium">Photo</span>
+      </a>
+
+      <a href="#medical" class="sidebar-link" data-nav="medical">
+        <i data-lucide="pill" class="w-5 h-5"></i>
+        <span class="flex-1">Medical Delivery</span>
+        <span class="text-xs px-2 py-0.5 rounded-full bg-rose-100 text-rose-700 font-medium">To Room</span>
+      </a>
+
+      <a href="#emergency" class="sidebar-link" data-nav="emergency">
+        <i data-lucide="phone-call" class="w-5 h-5"></i>
+        <span class="flex-1">Emergency Contacts</span>
+        <span class="text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-600 font-medium">24/7</span>
+      </a>
+
+      <div class="pt-4 mt-4 border-t border-slate-100">
+        <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">Secondary Websites</div>
+
+        <!-- Secondary Site 1 Link -->
+        <a href="store.html" class="sidebar-link group" title="Click to view departmental store & cross-building stock">
+          <i data-lucide="shopping-bag" class="w-5 h-5 text-indigo-500 group-hover:scale-110 transition-transform"></i>
+          <span class="flex-1 font-medium">Departmental Store</span>
+          <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-400"></i>
+        </a>
+
+        <!-- Secondary Site 2 Link -->
+        <a href="marketplace.html" class="sidebar-link group" title="Click to visit student marketplace to sell/rent">
+          <i data-lucide="repeat" class="w-5 h-5 text-amber-500 group-hover:scale-110 transition-transform"></i>
+          <span class="flex-1 font-medium">Campus OLX</span>
+          <span class="text-[10px] px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 font-bold">Sell/Rent</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Quick Helpdesk Footer -->
+    <div class="p-4 border-t border-slate-100 bg-slate-50/50">
+      <div class="flex items-center justify-between text-xs text-slate-500">
+        <span class="flex items-center gap-1.5 font-medium text-emerald-600">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          Gate Security Online
+        </span>
+        <a href="#emergency" class="text-blue-600 hover:underline font-semibold">Need Help?</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- SIDEBAR BACKDROP (Mobile) -->
+  <div id="sidebarBackdrop" class="fixed inset-0 bg-slate-900/40 z-20 hidden md:hidden"></div>
+
+  <!-- MAIN CONTENT CONTAINER (Right of Sidebar) -->
+  <div class="flex-1 flex flex-col md:ml-72 min-w-0">
+    
+    <!-- TOP STICKY BAR: Search & Status -->
+    <header class="sticky top-0 z-10 bg-white/90 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-8 py-3.5 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <!-- Mobile Sidebar Toggle -->
+        <button id="openSidebarBtn" class="md:hidden text-slate-600 hover:text-slate-900 p-1.5 rounded-lg border border-slate-200">
+          <i data-lucide="menu" class="w-5 h-5"></i>
+        </button>
+        <div class="hidden sm:block font-semibold text-slate-800 text-lg">
+          Hostel Services Dashboard
+        </div>
+      </div>
+
+      <!-- Universal Search Box -->
+      <div class="flex-1 max-w-lg relative">
+        <div class="relative">
+          <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+          <input 
+            type="text" 
+            id="globalSearchInput" 
+            placeholder="Search cleaning, today's meals, medical items, emergency numbers..." 
+            class="w-full pl-10 pr-9 py-2 bg-slate-100 hover:bg-slate-50 focus:bg-white border border-transparent focus:border-blue-500 rounded-xl text-sm transition-all outline-none"
+          />
+          <button id="clearSearchBtn" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 hidden">
+            <i data-lucide="x-circle" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <!-- Live Search Results Dropdown -->
+        <div id="searchResultsDropdown" class="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-slate-200 p-2 hidden z-40 max-h-96 overflow-y-auto">
+          <!-- Dynamic results populated by JS -->
+        </div>
+      </div>
+
+      <!-- Quick Emergency Speed Dial button -->
+      <a href="#emergency" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 text-sm font-semibold border border-red-200/80 transition-all shrink-0">
+        <i data-lucide="phone" class="w-4 h-4"></i>
+        <span class="hidden sm:inline">Emergency</span>
+      </a>
+    </header>
+
+    <!-- CONTENT WRAPPER -->
+    <main class="p-4 sm:p-8 space-y-10 max-w-7xl w-full mx-auto pb-24">
+
+      <!-- QUICK SECONDARY PORTAL HIGHLIGHT BANNER -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Card 1: Departmental Store Link -->
+        <div class="glass-card p-5 relative overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-600 text-white flex flex-col justify-between">
+          <div class="relative z-10">
+            <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-white/20 text-xs font-semibold backdrop-blur-sm mb-3">
+              <i data-lucide="store" class="w-3.5 h-3.5"></i> Secondary Web Portal
+            </div>
+            <h3 class="text-xl font-bold mb-1">Campus Departmental Store</h3>
+            <p class="text-blue-100 text-sm mb-4">Check live stock of groceries, stationery & essentials. If out of stock in your hostel, easily see which building has it!</p>
+          </div>
+          <div class="relative z-10 flex items-center justify-between pt-2 border-t border-white/20">
+            <span class="text-xs text-blue-100 font-medium">Cross-Building Stock Tracker Active</span>
+            <a href="store.html" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-white text-blue-700 text-sm font-bold shadow hover:bg-blue-50 transition">
+              Open Store Portal <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Card 2: Campus OLX Link -->
+        <div class="glass-card p-5 relative overflow-hidden bg-gradient-to-r from-amber-500 to-orange-500 text-white flex flex-col justify-between">
+          <div class="relative z-10">
+            <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-white/20 text-xs font-semibold backdrop-blur-sm mb-3">
+              <i data-lucide="repeat" class="w-3.5 h-3.5"></i> Student Marketplace
+            </div>
+            <h3 class="text-xl font-bold mb-1">Campus OLX - Buy, Sell & Rent</h3>
+            <p class="text-amber-100 text-sm mb-4">Sell or rent textbooks, coolers, cycles, and kettles directly to other students. Verified student phone and ID proof upload required!</p>
+          </div>
+          <div class="relative z-10 flex items-center justify-between pt-2 border-t border-white/20">
+            <span class="text-xs text-amber-100 font-medium">Verified Student Community</span>
+            <a href="marketplace.html" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-white text-orange-600 text-sm font-bold shadow hover:bg-amber-50 transition">
+              Open Campus OLX <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 1: ROOM CLEANING SLOT BOOKING -->
+      <section id="cleaning" class="scroll-mt-24">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div>
+            <div class="flex items-center gap-2 text-blue-600 font-semibold text-sm mb-1">
+              <i data-lucide="sparkles" class="w-4 h-4"></i> Housekeeping Services
+            </div>
+            <h2 class="text-2xl font-bold text-slate-900">Room Cleaning Slot Booking</h2>
+            <p class="text-slate-500 text-sm">Schedule daily room sweeping, dusting, and washroom sanitization slots.</p>
+          </div>
+          <button id="bookNewSlotBtn" class="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold shadow-md shadow-blue-500/20 text-sm transition">
+            <i data-lucide="plus-circle" class="w-4 h-4"></i> Book New Cleaning Slot
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Booking Form Card -->
+          <div class="glass-card p-6 lg:col-span-1 border-t-4 border-t-blue-600">
+            <h3 class="font-bold text-slate-900 text-lg mb-4 flex items-center gap-2">
+              <i data-lucide="calendar-plus" class="w-5 h-5 text-blue-600"></i> New Booking
+            </h3>
+            <form id="cleaningBookingForm" class="space-y-4">
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 uppercase mb-1.5">Hostel & Room</label>
+                <div class="grid grid-cols-2 gap-2">
+                  <input type="text" id="cleanBlock" value="Block A" readonly class="px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-medium text-slate-700" />
+                  <input type="text" id="cleanRoom" value="Room 408" required class="px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm font-semibold focus:border-blue-500 outline-none" />
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 uppercase mb-1.5">Preferred Date</label>
+                <input type="date" id="cleanDate" required class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium focus:border-blue-500 outline-none" />
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 uppercase mb-1.5">Select Time Slot</label>
+                <div class="space-y-2" id="slotSelector">
+                  <label class="flex items-center p-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50/50 transition">
+                    <input type="radio" name="cleanSlot" value="Morning: 09:00 AM - 11:00 AM" checked class="text-blue-600 focus:ring-blue-500" />
+                    <span class="ml-2.5 text-sm font-medium text-slate-800">Morning (09:00 AM - 11:00 AM)</span>
+                  </label>
+                  <label class="flex items-center p-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50/50 transition">
+                    <input type="radio" name="cleanSlot" value="Afternoon: 02:00 PM - 04:00 PM" class="text-blue-600 focus:ring-blue-500" />
+                    <span class="ml-2.5 text-sm font-medium text-slate-800">Afternoon (02:00 PM - 04:00 PM)</span>
+                  </label>
+                  <label class="flex items-center p-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50/50 transition">
+                    <input type="radio" name="cleanSlot" value="Evening: 05:00 PM - 07:00 PM" class="text-blue-600 focus:ring-blue-500" />
+                    <span class="ml-2.5 text-sm font-medium text-slate-800">Evening (05:00 PM - 07:00 PM)</span>
+                  </label>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 uppercase mb-1.5">Cleaning Type</label>
+                <select id="cleanType" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium focus:border-blue-500 outline-none">
+                  <option value="Regular Dusting & Floor Mopping">Regular Dusting & Floor Mopping</option>
+                  <option value="Deep Bathroom Sanitization">Deep Bathroom Sanitization</option>
+                  <option value="Complete Room Deep Clean + Balcony">Complete Room Deep Clean + Balcony</option>
+                  <option value="Trash & Waste Removal Only">Trash & Waste Removal Only</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 uppercase mb-1.5">Special Instructions (Optional)</label>
+                <input type="text" id="cleanNotes" placeholder="e.g. Please clean under the bed" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium focus:border-blue-500 outline-none" />
+              </div>
+
+              <button type="submit" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow transition flex items-center justify-center gap-2">
+                <i data-lucide="check-circle" class="w-4 h-4"></i> Confirm Cleaning Slot
+              </button>
+            </form>
+          </div>
+
+          <!-- Existing Bookings & Live Tracker -->
+          <div class="glass-card p-6 lg:col-span-2 flex flex-col">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="font-bold text-slate-900 text-lg flex items-center gap-2">
+                <i data-lucide="clock" class="w-5 h-5 text-blue-600"></i> My Cleaning History & Status
+              </h3>
+              <span id="bookingCountBadge" class="text-xs font-semibold px-2.5 py-1 bg-slate-100 text-slate-600 rounded-full">3 bookings</span>
+            </div>
+
+            <div id="cleaningBookingsList" class="space-y-3 flex-1 overflow-y-auto max-h-[420px] pr-1">
+              <!-- Dynamically rendered -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 2: WHAT IS COOKED IN MESS TODAY -->
+      <section id="mess" class="scroll-mt-24">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div>
+            <div class="flex items-center gap-2 text-emerald-600 font-semibold text-sm mb-1">
+              <i data-lucide="utensils" class="w-4 h-4"></i> Mess Catering & Menu
+            </div>
+            <h2 class="text-2xl font-bold text-slate-900">What is Cooked in Mess Today</h2>
+            <p class="text-slate-500 text-sm">Real-time daily menu schedule with vegetarian and special items.</p>
+          </div>
+
+          <div class="flex items-center gap-2 bg-emerald-50 border border-emerald-200 px-3.5 py-2 rounded-xl text-emerald-800 text-sm font-semibold">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+            <span>Serving: Dinner (7:30 PM - 9:30 PM)</span>
+          </div>
+        </div>
+
+        <!-- Meal Tab Buttons -->
+        <div class="flex items-center gap-2 p-1.5 bg-slate-200/80 rounded-2xl w-fit mb-6 overflow-x-auto">
+          <button class="meal-tab-btn px-4 py-2 rounded-xl font-semibold text-sm transition bg-white text-blue-700 shadow-sm" data-meal="dinner">
+            🌙 Dinner (Serving Now)
+          </button>
+          <button class="meal-tab-btn px-4 py-2 rounded-xl font-medium text-sm text-slate-600 hover:text-slate-900 transition" data-meal="breakfast">
+            🌅 Breakfast
+          </button>
+          <button class="meal-tab-btn px-4 py-2 rounded-xl font-medium text-sm text-slate-600 hover:text-slate-900 transition" data-meal="lunch">
+            ☀️ Lunch
+          </button>
+          <button class="meal-tab-btn px-4 py-2 rounded-xl font-medium text-sm text-slate-600 hover:text-slate-900 transition" data-meal="snacks">
+            ☕ Evening Snacks
+          </button>
+        </div>
+
+        <!-- Meal Menu Display Card -->
+        <div id="mealContentContainer" class="glass-card p-6 border-l-4 border-l-emerald-500">
+          <!-- Dynamically populated meal items -->
+        </div>
+      </section>
+
+      <!-- SECTION 3: ELECTRICITY METER READING WITH PHOTO PROOF -->
+      <section id="electricity" class="scroll-mt-24">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div>
+            <div class="flex items-center gap-2 text-amber-600 font-semibold text-sm mb-1">
+              <i data-lucide="zap" class="w-4 h-4"></i> Energy & Utility Management
+            </div>
+            <h2 class="text-2xl font-bold text-slate-900">Room Electricity Reading & Photo Proof</h2>
+            <p class="text-slate-500 text-sm">Submit your monthly meter reading with photographic proof to prevent billing discrepancies.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <!-- Submission Form -->
+          <div class="glass-card p-6 lg:col-span-6 border-t-4 border-t-amber-500">
+            <h3 class="font-bold text-slate-900 text-lg mb-4 flex items-center gap-2">
+              <i data-lucide="camera" class="w-5 h-5 text-amber-500"></i> Submit Current Meter Reading
+            </h3>
+
+            <form id="electricityForm" class="space-y-4">
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-700 uppercase mb-1.5">Meter Number</label>
+                  <input type="text" id="meterNumber" value="MTR-BLK-A-408" readonly class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-mono font-medium text-slate-700" />
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-slate-700 uppercase mb-1.5">Previous Reading</label>
+                  <input type="number" id="prevMeterReading" value="1420" readonly class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-mono font-medium text-slate-700" />
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 uppercase mb-1.5">Current Meter Reading (kWh Units)</label>
+                <div class="relative">
+                  <input type="number" id="currMeterReading" placeholder="e.g. 1512" required min="1420" class="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-lg text-base font-mono font-bold text-slate-900 focus:border-amber-500 outline-none" />
+                  <span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-semibold text-slate-400">kWh Units</span>
+                </div>
+                <p id="unitDiffNotice" class="text-xs text-slate-500 mt-1">Calculated usage: <span class="font-semibold text-slate-800" id="unitDiffValue">0 units</span></p>
+              </div>
+
+              <!-- PHOTO PROOF UPLOAD -->
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 uppercase mb-1.5 flex items-center justify-between">
+                  <span>Photo Proof of Meter Screen (Required)</span>
+                  <span class="text-[11px] text-amber-600 font-normal">PNG, JPG, WebP</span>
+                </label>
+                <div class="border-2 border-dashed border-slate-300 hover:border-amber-500 rounded-xl p-4 text-center cursor-pointer transition relative bg-slate-50/50" id="dropzoneContainer">
+                  <input type="file" id="meterPhotoInput" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full" required />
+                  <div id="uploadPrompt">
+                    <i data-lucide="image-plus" class="w-8 h-8 mx-auto text-slate-400 mb-2"></i>
+                    <p class="text-sm font-semibold text-slate-700">Click to upload meter photo proof</p>
+                    <p class="text-xs text-slate-400 mt-0.5">Clear image showing digits & meter seal</p>
+                  </div>
+                  <!-- Preview Box -->
+                  <div id="photoPreviewBox" class="hidden relative">
+                    <img id="photoPreviewImg" src="" alt="Meter Reading Proof" class="max-h-48 mx-auto rounded-lg shadow-sm border border-slate-200 object-cover" />
+                    <button type="button" id="removePhotoBtn" class="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1 shadow hover:bg-red-700">
+                      <i data-lucide="x" class="w-3.5 h-3.5"></i>
+                    </button>
+                    <p class="text-xs text-emerald-600 font-semibold mt-2 flex items-center justify-center gap-1">
+                      <i data-lucide="check" class="w-3.5 h-3.5"></i> Photo Attached
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 uppercase mb-1.5">Remarks / Meter Health</label>
+                <input type="text" id="meterRemarks" placeholder="e.g. Meter seal intact, reading taken at 8 PM" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium focus:border-amber-500 outline-none" />
+              </div>
+
+              <button type="submit" class="w-full py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-lg shadow transition flex items-center justify-center gap-2">
+                <i data-lucide="upload-cloud" class="w-4 h-4"></i> Submit Reading with Proof
+              </button>
+            </form>
+          </div>
+
+          <!-- History & Proof Archive -->
+          <div class="glass-card p-6 lg:col-span-6 flex flex-col">
+            <h3 class="font-bold text-slate-900 text-lg mb-4 flex items-center justify-between">
+              <span class="flex items-center gap-2">
+                <i data-lucide="history" class="w-5 h-5 text-amber-500"></i> Past Electricity Submissions
+              </span>
+              <span class="text-xs font-medium px-2.5 py-1 bg-amber-100 text-amber-800 rounded-full">Meter #408</span>
+            </h3>
+
+            <div id="electricityHistoryList" class="space-y-4 flex-1 overflow-y-auto max-h-[460px] pr-1">
+              <!-- Dynamically populated submission cards with photo proof -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 4: MEDICAL PRODUCTS DELIVERED TO ROOM -->
+      <section id="medical" class="scroll-mt-24">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div>
+            <div class="flex items-center gap-2 text-rose-600 font-semibold text-sm mb-1">
+              <i data-lucide="heart-pulse" class="w-4 h-4"></i> Campus Health Center
+            </div>
+            <h2 class="text-2xl font-bold text-slate-900">Medical Products Delivered to Room</h2>
+            <p class="text-slate-500 text-sm">Essential OTC medicines, first aid kits, and ORS delivered straight to your hostel room.</p>
+          </div>
+
+          <!-- Medical Search Filter -->
+          <div class="relative w-full sm:w-72">
+            <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+            <input type="text" id="medicalSearchInput" placeholder="Search medicines, pain spray..." class="w-full pl-9 pr-3 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:border-rose-500 outline-none" />
+          </div>
+        </div>
+
+        <!-- Medical Items Grid -->
+        <div id="medicalGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <!-- Dynamically populated with medical items -->
+        </div>
+
+        <!-- Recent Medical Orders Drawer/Box -->
+        <div id="activeMedicalOrdersBox" class="mt-6 glass-card p-5 border-l-4 border-l-rose-500 hidden">
+          <h4 class="font-bold text-slate-900 text-sm mb-2 flex items-center gap-2">
+            <i data-lucide="truck" class="w-4 h-4 text-rose-500"></i> Active Room Delivery Requests
+          </h4>
+          <div id="medicalOrdersList" class="space-y-2"></div>
+        </div>
+      </section>
+
+      <!-- SECTION 5: CAMPUS EMERGENCY NUMBERS -->
+      <section id="emergency" class="scroll-mt-24">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <div>
+            <div class="flex items-center gap-2 text-red-600 font-semibold text-sm mb-1">
+              <i data-lucide="alert-triangle" class="w-4 h-4"></i> 24/7 Campus SOS
+            </div>
+            <h2 class="text-2xl font-bold text-slate-900">Emergency & Duty Staff Directory</h2>
+            <p class="text-slate-500 text-sm">Direct contacts for medical room, warden, hostel caretaker, electrician, and security.</p>
+          </div>
+
+          <!-- Category filter buttons -->
+          <div class="flex flex-wrap gap-2" id="emergencyFilterButtons">
+            <button class="emergency-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-white" data-category="all">All</button>
+            <button class="emergency-filter-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200" data-category="Medical">Ambulance</button>
+            <button class="emergency-filter-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200" data-category="Warden">Warden</button>
+            <button class="emergency-filter-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200" data-category="Security">Security</button>
+            <button class="emergency-filter-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200" data-category="Maintenance">Maintenance</button>
+          </div>
+        </div>
+
+        <div id="emergencyGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Dynamically populated emergency cards -->
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- MODAL: MEDICAL ROOM DELIVERY CONFIRMATION -->
+  <div id="medicalOrderModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl modal-enter border border-slate-100">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-rose-100 text-rose-600 flex items-center justify-center font-bold text-lg">
+            💊
+          </div>
+          <div>
+            <h3 class="font-bold text-slate-900">Request Room Delivery</h3>
+            <p class="text-xs text-slate-500">Dispensary Delivery Staff</p>
+          </div>
+        </div>
+        <button id="closeMedicalModalBtn" class="text-slate-400 hover:text-slate-600">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="bg-slate-50 p-3.5 rounded-xl mb-4 border border-slate-200">
+        <p class="text-xs font-semibold text-slate-500 uppercase">Selected Product</p>
+        <p id="modalMedName" class="font-bold text-slate-900 text-base mt-0.5">Paracetamol 650mg</p>
+        <div class="flex items-center justify-between mt-1 text-sm">
+          <span id="modalMedPack" class="text-slate-500 text-xs">Strip of 15</span>
+          <span id="modalMedPrice" class="font-bold text-rose-600">₹32</span>
+        </div>
+      </div>
+
+      <form id="medicalOrderForm" class="space-y-3.5">
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Deliver to Hostel & Room</label>
+          <input type="text" id="medDeliveryRoom" value="Block A - Room 408" required class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium focus:border-rose-500 outline-none" />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Student Contact Number</label>
+          <input type="tel" id="medDeliveryPhone" value="9876543210" required class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium focus:border-rose-500 outline-none" />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Urgency Level</label>
+          <select id="medUrgency" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium focus:border-rose-500 outline-none">
+            <option value="Urgent (Within 15-20 mins)">⚡ Urgent - Mild Fever/Pain (15-20 mins)</option>
+            <option value="Standard (Within 45 mins)">Standard Delivery (Within 45 mins)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Special Delivery Note</label>
+          <input type="text" id="medNote" placeholder="e.g. Ring the bell twice" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-sm font-medium focus:border-rose-500 outline-none" />
+        </div>
+
+        <button type="submit" class="w-full py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-semibold rounded-lg shadow-md transition flex items-center justify-center gap-2 mt-2">
+          <i data-lucide="truck" class="w-4 h-4"></i> Place Room Delivery Order
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- SCRIPTS -->
+  <script src="js/mockData.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

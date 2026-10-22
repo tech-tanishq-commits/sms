@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cafes & More - Campus Food Court & Dining Portal | LPU</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    :root {
+      --veg-green: #16a34a;
+      --veg-green-bg: #dcfce7;
+      --veg-green-border: #86efac;
+      --nonveg-red: #dc2626;
+      --nonveg-red-bg: #fee2e2;
+      --nonveg-red-border: #fca5a5;
+    }
+
+    .cafe-hero-banner {
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #4338ca 100%);
+      color: white;
+      border-radius: 16px;
+      padding: 2.2rem 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 25px -5px rgba(30, 27, 75, 0.35);
+      position: relative;
+      overflow: hidden;
+    }
+    .cafe-hero-banner::after {
+      content: '';
+      position: absolute;
+      right: -30px;
+      bottom: -40px;
+      width: 260px;
+      height: 260px;
+      background: radial-gradient(circle, rgba(249, 115, 22, 0.25) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    /* Single-way Sliding Toggle Container */
+    .diet-slider-container {
+      display: flex;
+      justify-content: center;
+      margin: 1.5rem 0 2rem 0;
+    }
+    .diet-slider-track {
+      display: inline-flex;
+      position: relative;
+      background: var(--surface-alt, #f1f5f9);
+      padding: 6px;
+      border-radius: 50px;
+      border: 2px solid var(--border, #e2e8f0);
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
+      width: 420px;
+      max-width: 100%;
+    }
+    .diet-slider-pill {
+      position: absolute;
+      top: 6px;
+      bottom: 6px;
+      width: calc(50% - 6px);
+      border-radius: 40px;
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 1;
+    }
+    .diet-slider-track.veg-active .diet-slider-pill {
+      left: 6px;
+      background: linear-gradient(135deg, #16a34a, #15803d);
+    }
+    .diet-slider-track.nonveg-active .diet-slider-pill {
+      left: calc(50%);
+      background: linear-gradient(135deg, #dc2626, #b91c1c);
+    }
+    .diet-btn {
+      flex: 1;
+      position: relative;
+      z-index: 2;
+      background: transparent;
+      border: none;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 40px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      transition: color 0.25s ease;
+      color: var(--text-muted, #64748b);
+    }
+    .diet-slider-track.veg-active .diet-btn.btn-veg {
+      color: #ffffff;
+    }
+    .diet-slider-track.nonveg-active .diet-btn.btn-nonveg {
+      color: #ffffff;
+    }
+
+    /* Sub-categories Tabs for Veg */
+    .veg-subnav {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    .veg-sub-btn {
+      padding: 0.65rem 1.4rem;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border: 1.5px solid var(--border, #cbd5e1);
+      background: var(--surface, #ffffff);
+      color: var(--text-main, #334155);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+    }
+    .veg-sub-btn.active {
+      background: #16a34a;
+      color: white;
+      border-color: #16a34a;
+      box-shadow: 0 4px 14px rgba(22, 163, 74, 0.3);
+    }
+    .veg-sub-btn:hover:not(.active) {
+      border-color: #16a34a;
+      color: #16a34a;
+    }
+
+    /* Brand Filters */
+    .brand-chips-row {
+      display: flex;
+      gap: 0.6rem;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1.8rem;
+      scrollbar-width: thin;
+    }
+    .brand-chip {
+      white-space: nowrap;
+      padding: 0.45rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      background: var(--surface-card, #f8fafc);
+      border: 1px solid var(--border, #e2e8f0);
+      color: var(--text-main, #475569);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .brand-chip:hover, .brand-chip.active {
+      background: var(--primary, #f97316);
+      color: white;
+      border-color: var(--primary, #f97316);
+    }
+
+    /* Food Menu Card */
+    .food-item-card {
+      background: var(--surface-card, #ffffff);
+      border: 1px solid var(--border, #e2e8f0);
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+    }
+    .food-item-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px -6px rgba(0,0,0,0.12);
+    }
+    .food-card-img-wrap {
+      position: relative;
+      height: 180px;
+      width: 100%;
+      overflow: hidden;
+      background: #f1f5f9;
+    }
+    .food-card-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    .food-item-card:hover .food-card-img-wrap img {
+      transform: scale(1.06);
+    }
+    .diet-badge-dot {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      background: white;
+      border-radius: 4px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    .diet-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+    .diet-dot.veg { background: #16a34a; }
+    .diet-dot.nonveg { background: #dc2626; }
+    .food-brand-tag {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(4px);
+      color: white;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.25rem 0.6rem;
+      border-radius: 12px;
+    }
+    .food-card-body {
+      padding: 1.1rem;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .food-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-main, #0f172a);
+      margin-bottom: 0.35rem;
+    }
+    .food-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted, #64748b);
+      line-height: 1.4;
+      margin-bottom: 0.9rem;
+      flex: 1;
+    }
+    .food-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border-light, #f1f5f9);
+    }
+    .food-price {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-main, #0f172a);
+    }
+    .btn-add-food {
+      background: #16a34a;
+      color: white;
+      border: none;
+      padding: 0.45rem 1.1rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: all 0.2s;
+    }
+    .btn-add-food.btn-red {
+      background: #dc2626;
+    }
+    .btn-add-food:hover {
+      opacity: 0.92;
+      transform: scale(1.03);
+    }
+
+    /* MB Square Exclusive Banner */
+    .mbsquare-banner {
+      background: linear-gradient(135deg, #450a0a 0%, #7f1d1d 50%, #991b1b 100%);
+      color: white;
+      padding: 1.5rem 1.8rem;
+      border-radius: 14px;
+      margin-bottom: 1.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 8px 20px -4px rgba(220, 38, 38, 0.3);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="lpu-header">
+    <div class="header-container">
+      <div class="brand-badge">
+        <a href="/" style="text-decoration:none; display:flex; align-items:center; gap:0.75rem;">
+          <div class="lpu-logo-icon">LPU</div>
+          <div class="brand-text">
+            <h1>Cafes & More</h1>
+            <p>Uni-Mall & Food Court Campus Dining • Room Delivery</p>
+          </div>
+        </a>
+      </div>
+
+      <div class="header-actions">
+        <button id="theme-toggle-btn" class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+          <span id="theme-icon">🌙</span> <span id="theme-text">Dark Mode</span>
+        </button>
+
+        <a href="/" class="btn-calendar-pill" style="text-decoration:none;">
+          ← Back to Main Portal
+        </a>
+
+        <button class="cart-pill" onclick="openCafeCartModal()" id="cart-pill-btn">
+          🛒 Cart (<span id="cafe-cart-count">0</span>)
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container" style="max-width: 1200px; margin: 1.5rem auto; padding: 0 1rem;">
+
+    <!-- Hero Announcement -->
+    <div class="cafe-hero-banner">
+      <div style="max-width: 700px; position:relative; z-index:2;">
+        <span style="background: rgba(249, 115, 22, 0.3); color: #fdba74; font-weight:700; font-size:0.78rem; padding:0.25rem 0.75rem; border-radius:20px; text-transform:uppercase; letter-spacing:0.05em;">
+          🍔 Campus Food Court & Uni-Mall Delivery
+        </span>
+        <h2 style="font-size: 2rem; font-weight: 800; margin: 0.6rem 0 0.4rem 0;">Craving Good Food in Your Room?</h2>
+        <p style="opacity: 0.9; font-size: 0.95rem;">Hot and fresh meals delivered straight to BH-1 to BH-8 & GH-1 to GH-6 hostel rooms. Choose between Pure Veg Delights and MB Square Non-Veg Haven.</p>
+      </div>
+    </div>
+
+    <!-- SINGLE-WAY SLIDING VEG / NON-VEG TOGGLE -->
+    <div class="diet-slider-container">
+      <div class="diet-slider-track veg-active" id="diet-slider-track">
+        <div class="diet-slider-pill" id="diet-slider-pill"></div>
+        <button class="diet-btn btn-veg" id="btn-veg" onclick="setDietMode('veg')">
+          <span style="display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; background:#ffffff; border-radius:3px; border:1.5px solid #16a34a;"><span style="width:8px; height:8px; border-radius:50%; background:#16a34a;"></span></span>
+          Pure Veg
+        </button>
+        <button class="diet-btn btn-nonveg" id="btn-nonveg" onclick="setDietMode('nonveg')">
+          <span style="display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; background:#ffffff; border-radius:3px; border:1.5px solid #dc2626;"><span style="width:8px; height:8px; border-radius:50%; background:#dc2626;"></span></span>
+          Non-Veg (MB Square)
+        </button>
+      </div>
+    </div>
+
+    <!-- VEG SECTION CONTAINER -->
+    <div id="veg-section" style="display: block;">
+      <!-- Sub-options for Veg: Uni-Mall & Cafes vs Food Court -->
+      <div class="veg-subnav">
+        <button class="veg-sub-btn active" id="btn-sub-unimall" onclick="setVegCategory('unimall')">
+          🛍️ Uni-Mall & Cafes
+        </button>
+        <button class="veg-sub-btn" id="btn-sub-foodcourt" onclick="setVegCategory('foodcourt')">
+          🍲 Food Court Special
+        </button>
+      </div>
+
+      <!-- Uni-Mall Brands Row -->
+      <div id="unimall-brands" class="brand-chips-row">
+        <button class="brand-chip active" onclick="filterBrand('ALL')">All Uni-Mall Cafes</button>
+        <button class="brand-chip" onclick="filterBrand('Dominos')">🍕 Domino's Pizza</button>
+        <button class="brand-chip" onclick="filterBrand('MomsKitchen')">🥘 Mom's Kitchen</button>
+        <button class="brand-chip" onclick="filterBrand('TacoBell')">🌮 Taco Bell</button>
+        <button class="brand-chip" onclick="filterBrand('RollsEmpire')">🌯 Rolls Empire</button>
+        <button class="brand-chip" onclick="filterBrand('LpuSweets')">🍯 LPU Sweets</button>
+        <button class="brand-chip" onclick="filterBrand('Hangouts')">☕ Hangouts</button>
+      </div>
+
+      <!-- Food Court Brands Row -->
+      <div id="foodcourt-brands" class="brand-chips-row" style="display: none;">
+        <button class="brand-chip active" onclick="filterBrand('ALL')">All Food Court</button>
+        <button class="brand-chip" onclick="filterBrand('TandooriKitchen')">🫓 Tandoori Kitchen</button>
+        <button class="brand-chip" onclick="filterBrand('AmritsariZaika')">🍛 Amritsari Zaika</button>
+        <button class="brand-chip" onclick="filterBrand('ChaapExpress')">🍢 Chaap Express</button>
+        <button class="brand-chip" onclick="filterBrand('BasantIceCream')">🍨 Basant Ice Cream</button>
+        <button class="brand-chip" onclick="filterBrand('MilitaryKitchen')">🍲 Military Kitchen</button>
+        <button class="brand-chip" onclick="filterBrand('JuiceCentres')">🥤 Juice Centres</button>
+        <button class="brand-chip" onclick="filterBrand('ProteinOShake')">💪 Protein O Shake</button>
+      </div>
+
+      <!-- Veg Food Grid -->
+      <div class="cards-grid" id="veg-items-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem;">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+
+    <!-- NON-VEG SECTION CONTAINER (MB SQUARE ONLY) -->
+    <div id="nonveg-section" style="display: none;">
+      <div class="mbsquare-banner">
+        <div>
+          <span style="background: rgba(255,255,255,0.2); padding: 0.2rem 0.6rem; border-radius: 6px; font-size: 0.8rem; font-weight: 700;">
+            EXCLUSIVE OUTLET
+          </span>
+          <h3 style="font-size: 1.6rem; font-weight: 800; margin: 0.4rem 0 0.2rem 0;">🍗 MB SQUARE NON-VEG ZONE</h3>
+          <p style="font-size: 0.9rem; opacity: 0.9;">Authentic Dum Biryani, Rich Butter Chicken, Crispy Wings & Shawarma at Reasonable Student Prices.</p>
+        </div>
+        <div style="font-size: 2.2rem;">
+          🍗🔥
+        </div>
+      </div>
+
+      <!-- Non-Veg Food Grid -->
+      <div class="cards-grid" id="nonveg-items-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem;">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Cafe Cart Modal -->
+  <div class="modal-backdrop" id="cafe-cart-modal" style="display: none;">
+    <div class="modal-box" style="max-width: 520px;">
+      <div class="modal-header">
+        <h3>🛒 Your Dining Cart</h3>
+        <button class="modal-close-btn" onclick="closeCafeCartModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="cafe-cart-items-list" style="margin-bottom: 1.5rem; max-height: 280px; overflow-y: auto;">
+          <!-- Populated via JS -->
+        </div>
+
+        <div style="background: var(--surface-alt, #f8fafc); border-radius: 12px; padding: 1rem; margin-bottom: 1.2rem;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem; font-size:0.9rem;">
+            <span>Subtotal:</span>
+            <strong id="cafe-cart-subtotal">₹0</strong>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem; font-size:0.9rem;">
+            <span>Hostel Room Delivery:</span>
+            <strong style="color: #16a34a;">FREE (Campus Pilot)</strong>
+          </div>
+          <div style="display:flex; justify-content:space-between; font-size:1.15rem; font-weight:800; border-top:1px dashed var(--border, #cbd5e1); padding-top:0.6rem;">
+            <span>Total Payable:</span>
+            <strong id="cafe-cart-total" style="color: var(--primary, #f97316);">₹0</strong>
+          </div>
+        </div>
+
+        <form id="cafe-order-form" onsubmit="submitCafeOrder(event)">
+          <div class="form-group">
+            <label>Student Name & Reg No</label>
+            <input type="text" id="cafe-order-student" class="form-control" value="Sarthak Mishra (12204561)" required>
+          </div>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+            <div class="form-group">
+              <label>Delivery Block</label>
+              <select id="cafe-order-block" class="form-control" required>
+                <option value="BH-3" selected>BH-3 (Boys Hostel 3)</option>
+                <option value="BH-1">BH-1</option>
+                <option value="BH-2">BH-2</option>
+                <option value="BH-4">BH-4</option>
+                <option value="BH-5">BH-5</option>
+                <option value="BH-6">BH-6</option>
+                <option value="GH-1">GH-1</option>
+                <option value="GH-2">GH-2</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Room Number</label>
+              <input type="text" id="cafe-order-room" class="form-control" value="412" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Payment Method</label>
+            <select id="cafe-order-payment" class="form-control">
+              <option value="UPI / QR Code on Delivery">UPI / QR Code on Delivery</option>
+              <option value="Cash on Delivery">Cash on Delivery</option>
+              <option value="LPU Campus Card">LPU Campus Smart Card</option>
+            </select>
+          </div>
+          <div class="modal-actions" style="margin-top: 1.5rem;">
+            <button type="button" class="btn-secondary" onclick="closeCafeCartModal()">Add More Items</button>
+            <button type="submit" class="btn-primary" style="padding: 0.65rem 1.4rem;">Place Order Now 🚀</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container"></div>
+
+  <script>
+    // Theme Management
+    function initTheme() {
+      const savedTheme = localStorage.getItem('lpu_portal_theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+        document.getElementById('theme-icon').innerText = '☀️';
+        document.getElementById('theme-text').innerText = 'Light Mode';
+      } else {
+        document.body.classList.remove('dark-mode');
+        document.getElementById('theme-icon').innerText = '🌙';
+        document.getElementById('theme-text').innerText = 'Dark Mode';
+      }
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') || 'light';
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('lpu_portal_theme', next);
+      initTheme();
+    }
+
+    // Food Database with Real Unsplash Images
+        const FOOD_ITEMS = [
+      // Uni-Mall & Cafes (Veg)
+      {
+        id: 'dom-1',
+        name: "Domino's Farmhouse Cheese Burst",
+        brand: 'Dominos',
+        section: 'unimall',
+        isVeg: true,
+        price: 219,
+        desc: "Crispy crust loaded with mozzarella cheese burst, fresh tomatoes, crunchy capsicum & grilled mushrooms.",
+        img: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600&auto=format&fit=crop&q=80"
+      },
+      {
+        id: 'dom-2',
+        name: "Domino's Peppy Paneer Pizza",
+        brand: 'Dominos',
+        section: 'unimall',
+        isVeg: true,
+        price: 189,
+        desc: "Spiced cottage cheese chunks, fiery red paprika & crisp capsicum with herb marinara sauce.",
+        img: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&auto=format&fit=crop&q=80"
+      },
+      {
+        id: 'dom-3',
+        name: "Cheesy Garlic Breadsticks & Dip",
+        brand: 'Dominos',
+        section: 'unimall',
+        isVeg: true,
+        price: 109,
+        desc: "Freshly baked garlic breadsticks brushed with herb butter and served with creamy jalapeno dip.",
+        img: "https://images.unsplash.com/photo-1619535860434-ba1d8fa12536?w=600&auto=format&fit=crop&q=80"
+      },
+      {
+        id: 'mom-1',
+        name: "Mom's Special Desi Ghee Paratha Combo",
+        brand: 'MomsKitchen',
+        section: 'unimall',
+        isVeg: true,
+        price: 99,
+        desc: "2 Stuffed Aloo Pyaz Parathas roasted in desi ghee, served with fresh curd, butter and homemade pickle.",
+        img: "https://images.unsplash.com/photo-1626074353765-517a681e40be?w=600&auto=format&fit=crop&q=80"
+      },
+      {
+        id: 'mom-2',
+        name: "Ghar Jaisa Rajma Chawal Thali",
+        brand: 'MomsKitchen',
+        section: 'unimall',
+        isVeg: true,
+        price: 110,
+        desc: "Slow-cooked Kashmiri Rajma with aromatic cumin jeera rice, fresh green salad, and mint chutney.",
+        img: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=600&auto=format&fit=crop&q=80"
+      },
+      {
+        id: 'mom-3',
+        name: "Amritsari Kadhi Pakoda Thali",
+        brand: 'MomsKitchen',
+        section: 'unimall',
+        isVeg: true,
+        price: 105,
+        desc: "Tangy curd kadhi with soft onion pakodas, steamed basmati rice, papad, and sirka onion.",
+        img: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=600&auto=format&fit=crop&q=80"
+      },
+      {
+        id: 'taco-1',
+        name: "Taco Bell Crispy Paneer Taco",
+        brand: 'TacoBell',
+        section: 'unimall',
+        isVeg: true,
+        price: 129,
+        desc: "Crispy corn shell packed with Mexican spiced paneer, shredded lettuce, pico de gallo & creamy cheese sauce.",
+        img: "https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?w=600&auto=format&fit=crop&q=80"
+      },
+      {
+        id: 'taco-2',
+        name: "Taco Bell Loaded Cheesy Nachos",
+        brand: 'TacoBell',
+        section: 'unimall',
+        isVeg: true,
+        price: 139,
+        desc: "Crunchy tortilla nachos smothered in warm nacho cheese, pinto beans, salsa, and pickled jalapenos.",
+        img: "https://images.unsplash.com/photo-1513456852971-30c0b8199d4d?w=600&auto=format&fit=crop&q=80"
+      },
+      {
+        id: 'roll-1',
+        name: "Rolls Empire Double Paneer Tikka Kathi",
+        brand: 'RollsEmpire',
+        section: 'unimall',
+        isVeg: true,
+        price: 120,
+        desc: "Layered flaky lachha paratha stuffed with charred tandoori paneer, chopped onions, and spiced mint mayo.",
+        img: "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=600&auto=format&fit=crop&q=80"
+      },
+      {
+        id: 'roll-2',
+        name: "Rolls Empire Veggie Mayo Crunch Roll",
+        brand: 'RollsEmpire',
+        section: 'unimall',
+        isVeg: true,
+        price: 90,
+        desc: "Golden crispy veggie patty roll with shredded cabbage, capsicum, secret spice blend and garlic mayo.",
+        img: "https://images.unsplash.com/photo-1509722747041-616f39b57569?w=600&auto=format&fit=crop&q=80"
+      },
+      {
+        id: 'swt-1',
+        name: "LPU Sweets Hot Desi Ghee Gulab Jamun (2 pcs)",
+        brand: 'LpuSweets',
+        section: 'unimall',
+        isVeg: true,
+        price: 60,
+        desc: "Melt-in-mouth hot khoya dumplings soaked in saffron-rose sugar syrup.",
+        img: "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=600&auto=format&fit=crop&q=80"
+      },
+      {
+        id: 'swt-2',
+        name: "LPU Sweets Kesar Rasmalai (2 pcs)",
+        brand: 'LpuSweets',
+        section: 'unimall',
+        isVeg: true,
+        price: 80,
+        desc: "Soft cottage cheese patties dipped in rich saffron-pistachio thickened cardamom milk.",
+        img: "https://images.unsplash.com/photo-1596797038530-2c107229654b?w=600&auto=format&fit=crop&q=80"
+      },
+      {
+        id: 'hng-1',
+        name: "Hangouts Thick Hazelnut Cold Coffee",
+        brand: 'Hangouts',
+        section: 'unimall',
+        isVeg: true,
+        price: 85,
+        desc: "Creamy iced brew blended with espresso shots, roasted hazelnut syrup, and chocolate drizzle.",
+        img: "https://images.unsplash.com/photo-1517256064527-09c73fc73e38?w=600&auto=format&fit=crop&q=80"
+      },
+      {
+        id: 'hng-2',
+        name: "Hangouts Grilled Cheese Club Sandwich",
+        brand: 'Hangouts',
+        section: 'unimall',
+        isVeg: true,
+        price: 110,
+        desc: "Triple layered toasted bread with melted mozzarella, cucumber, tomatoes, herbs and peri peri fries.",
+        img: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=600&auto=format&fit=crop&q=80"
+      },
+
+      // Food Court (Veg)
+      {
+        id: 'fc-1',
+        name: "Tandoori Paneer Tikka Platter",
+        brand: 'TandooriKitchen',
+        section: 'foodcourt',
+        isVeg: true,
+        price: 150,
+        desc: "Clay-oven roasted cottage cheese, capsicum and onions dusted with chaat masala, served with mint dip.",
+        img: "https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=600&auto=format&fit=crop&q=80"
+      },
+      {
+        id: 'fc-2',
+        name: "Dal Makhani with 2 Butter Naans",
+        brand: 'TandooriKitchen',
+        section: 'foodcourt',
+        isVeg: true,
+        price: 140,
+        desc: "Slow overnight cooked black lentils in butter and cream served with piping hot clay oven tandoori butter naans.",
+        img: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&auto=format&fit=crop&q=80"
+      },
+      {
+        id: 'fc-3',
+        name: "Amritsari Chole Stuffed Kulche",
+        brand: 'AmritsariZaika',
+        section: 'foodcourt',
+        isVeg: true,
+        price: 100,
+        desc: "Super flaky tandoori kulcha stuffed with spiced potatoes and paneer, served with authentic spicy Amritsari chole.",
+        img: "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=600&auto=format&fit=crop&q=80"
+      },
+      {
+        id: 'fc-4',
+        name: "Creamy Malai Soya Chaap",
+        brand: 'ChaapExpress',
+        section: 'foodcourt',
+        isVeg: true,
+        price: 130,
+        desc: "Tender soybean chaap pieces marinated in cashew-cheese cream and grilled golden in tandoor.",
+        img: "https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=600&auto=format&fit=crop&q=80"
+      },
+      {
+        id: 'fc-5',
+        name: "Famous Kulfi Falooda Sundae",
+        brand: 'BasantIceCream',
+        section: 'foodcourt',
+        isVeg: true,
+        price: 90,
+        desc: "Traditional rich rabri kulfi sliced and topped with rose falooda vermicelli, sabja seeds, and pistachios.",
+        img: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=600&auto=format&fit=crop&q=80"
+      },
+      {
+        id: 'fc-6',
+        name: "High-Protein Soya Bhurji Tiffin",
+        brand: 'MilitaryKitchen',
+        section: 'foodcourt',
+        isVeg: true,
+        price: 110,
+        desc: "Wholesome high-protein soya chunks scrambled with tomatoes, onions and green chillies, with 3 whole wheat rotis.",
+        img: "https://images.unsplash.com/photo-1610057099443-fde8c4d50f91?w=600&auto=format&fit=crop&q=80"
+      },
+      {
+        id: 'fc-7',
+        name: "Fresh Pomegranate (Anar) Detox Juice",
+        brand: 'JuiceCentres',
+        section: 'foodcourt',
+        isVeg: true,
+        price: 70,
+        desc: "100% pure cold-pressed fresh pomegranate seeds with a pinch of rock salt and black pepper.",
+        img: "https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=600&auto=format&fit=crop&q=80"
+      },
+      {
+        id: 'fc-8',
+        name: "Whey Gold Muscle Builder Shake (30g Protein)",
+        brand: 'ProteinOShake',
+        section: 'foodcourt',
+        isVeg: true,
+        price: 130,
+        desc: "Chilled milk shake blended with 1 scoop Whey Isolate, peanut butter, banana, and chia seeds.",
+        img: "https://images.unsplash.com/photo-1579954115545-a95591f28bfc?w=600&auto=format&fit=crop&q=80"
+      },
+
+      // NON-VEG SECTION (ONLY MB SQUARE - REASONABLE PRICES)
+      {
+        id: 'mb-1',
+        name: "MB Butter Chicken (Half) with 2 Butter Naans",
+        brand: 'MBSquare',
+        section: 'nonveg',
+        isVeg: false,
+        price: 220,
+        desc: "Tender shredded tandoori chicken simmered in rich velvety butter-tomato gravy with 2 crisp tandoori naans.",
+        img: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=600&auto=format&fit=crop&q=80"
+      },
+      {
+        id: 'mb-2',
+        name: "Dum Handi Chicken Biryani + Salan & Raita",
+        brand: 'MBSquare',
+        section: 'nonveg',
+        isVeg: false,
+        price: 190,
+        desc: "Fragrant long-grain basmati rice layered with juicy marinated chicken pieces, fried onions, served with mirchi salan.",
+        img: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=600&auto=format&fit=crop&q=80"
+      },
+      {
+        id: 'mb-3',
+        name: "MB Crispy Fried Chicken Wings (6 Pcs)",
+        brand: 'MBSquare',
+        section: 'nonveg',
+        isVeg: false,
+        price: 170,
+        desc: "Crisp-battered juicy chicken wings tossed in fiery peri-peri seasoning with creamy garlic dip.",
+        img: "https://images.unsplash.com/photo-1527477396000-e27163b481c2?w=600&auto=format&fit=crop&q=80"
+      },
+      {
+        id: 'mb-4',
+        name: "Chicken Shawarma Roll with Garlic Toum",
+        brand: 'MBSquare',
+        section: 'nonveg',
+        isVeg: false,
+        price: 120,
+        desc: "Slow roasted spit-grilled chicken slivers wrapped in kuboos bread with French fries, pickles & authentic garlic sauce.",
+        img: "https://images.unsplash.com/photo-1561651823-34feb02250e4?w=600&auto=format&fit=crop&q=80"
+      },
+      {
+        id: 'mb-5',
+        name: "Mutton Rogan Josh Bowl with Jeera Rice",
+        brand: 'MBSquare',
+        section: 'nonveg',
+        isVeg: false,
+        price: 260,
+        desc: "Tender braised mutton chunks in aromatic Kashmiri spices and saffron gravy, served with cumin rice.",
+        img: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=600&auto=format&fit=crop&q=80"
+      },
+      {
+        id: 'mb-6',
+        name: "Charcoal Tandoori Chicken Tikka (8 Pcs)",
+        brand: 'MBSquare',
+        section: 'nonveg',
+        isVeg: false,
+        price: 190,
+        desc: "Boneless chicken thigh cubes steeped in mustard oil, yogurt and tandoori masala, charred to perfection.",
+        img: "https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?w=600&auto=format&fit=crop&q=80"
+      },
+      {
+        id: 'mb-7',
+        name: "Homestyle Dhaba Egg Curry (2 Eggs) + 4 Rotis",
+        brand: 'MBSquare',
+        section: 'nonveg',
+        isVeg: false,
+        price: 130,
+        desc: "Two fried boiled eggs stewed in spicy onion-tomato gravy with 4 soft whole wheat chapatis.",
+        img: "https://images.unsplash.com/photo-1610057099443-fde8c4d50f91?w=600&auto=format&fit=crop&q=80"
+      },
+      {
+        id: 'mb-8',
+        name: "Amritsari Crispy Fish Fry with Mint Tartar",
+        brand: 'MBSquare',
+        section: 'nonveg',
+        isVeg: false,
+        price: 210,
+        desc: "Fresh river sole fillet coated in ajwain gram flour batter, deep fried crispy and dusted with chat masala.",
+        img: "https://images.unsplash.com/photo-1562967914-608f82629710?w=600&auto=format&fit=crop&q=80"
+      },
+      {
+        id: 'mb-9',
+        name: "Schezwan Chicken Fried Rice & Chilli Chicken Combo",
+        brand: 'MBSquare',
+        section: 'nonveg',
+        isVeg: false,
+        price: 210,
+        desc: "Wok-tossed spicy chicken fried rice accompanied by 4 pieces of succulent saucy chilli chicken.",
+        img: "https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=600&auto=format&fit=crop&q=80"
+      },
+      {
+        id: 'mb-10',
+        name: "Chicken Malai Tikka Roll (Lachha Paratha)",
+        brand: 'MBSquare',
+        section: 'nonveg',
+        isVeg: false,
+        price: 140,
+        desc: "Creamy cardamom-infused chicken malai tikka rolled with lachha onions in a crisp handmade paratha.",
+        img: "https://images.unsplash.com/photo-1561651823-34feb02250e4?w=600&auto=format&fit=crop&q=80"
+      }
+    ];
+
+    let currentDiet = 'veg';
+    let currentVegCategory = 'unimall';
+    let currentBrandFilter = 'ALL';
+    let cafeCart = JSON.parse(localStorage.getItem('lpu_dining_cart') || '[]');
+
+    function setDietMode(mode) {
+      currentDiet = mode;
+      const track = document.getElementById('diet-slider-track');
+      const vegSec = document.getElementById('veg-section');
+      const nonvegSec = document.getElementById('nonveg-section');
+
+      if (mode === 'veg') {
+        track.className = 'diet-slider-track veg-active';
+        vegSec.style.display = 'block';
+        nonvegSec.style.display = 'none';
+        renderVegItems();
+      } else {
+        track.className = 'diet-slider-track nonveg-active';
+        vegSec.style.display = 'none';
+        nonvegSec.style.display = 'block';
+        renderNonVegItems();
+      }
+    }
+
+    function setVegCategory(cat) {
+      currentVegCategory = cat;
+      currentBrandFilter = 'ALL';
+      document.getElementById('btn-sub-unimall').className = cat === 'unimall' ? 'veg-sub-btn active' : 'veg-sub-btn';
+      document.getElementById('btn-sub-foodcourt').className = cat === 'foodcourt' ? 'veg-sub-btn active' : 'veg-sub-btn';
+
+      document.getElementById('unimall-brands').style.display = cat === 'unimall' ? 'flex' : 'none';
+      document.getElementById('foodcourt-brands').style.display = cat === 'foodcourt' ? 'flex' : 'none';
+
+      // Reset brand active pills
+      const activeRow = cat === 'unimall' ? document.getElementById('unimall-brands') : document.getElementById('foodcourt-brands');
+      activeRow.querySelectorAll('.brand-chip').forEach((chip, i) => {
+        chip.className = i === 0 ? 'brand-chip active' : 'brand-chip';
+      });
+
+      renderVegItems();
+    }
+
+    function filterBrand(brand) {
+      currentBrandFilter = brand;
+      const container = currentVegCategory === 'unimall' ? document.getElementById('unimall-brands') : document.getElementById('foodcourt-brands');
+      container.querySelectorAll('.brand-chip').forEach(chip => {
+        if (chip.getAttribute('onclick').includes("'" + brand + "'")) {
+          chip.classList.add('active');
+        } else {
+          chip.classList.remove('active');
+        }
+      });
+      renderVegItems();
+    }
+
+    function renderVegItems() {
+      const grid = document.getElementById('veg-items-grid');
+      let items = FOOD_ITEMS.filter(item => item.isVeg && item.section === currentVegCategory);
+      if (currentBrandFilter !== 'ALL') {
+        items = items.filter(item => item.brand.toLowerCase() === currentBrandFilter.toLowerCase());
+      }
+
+      grid.innerHTML = items.map(item => `
+        <div class="food-item-card">
+          <div class="food-card-img-wrap">
+            <img src="${item.img}" alt="${escapeHtml(item.name)}" loading="lazy">
+            <div class="diet-badge-dot">
+              <span class="diet-dot veg"></span>
+            </div>
+            <span class="food-brand-tag">${item.brand}</span>
+          </div>
+          <div class="food-card-body">
+            <h4 class="food-title">${escapeHtml(item.name)}</h4>
+            <p class="food-desc">${escapeHtml(item.desc)}</p>
+            <div class="food-footer">
+              <span class="food-price">₹${item.price}</span>
+              <button class="btn-add-food" onclick="addToCafeCart('${item.id}')">
+                + Add to Cart
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderNonVegItems() {
+      const grid = document.getElementById('nonveg-items-grid');
+      const items = FOOD_ITEMS.filter(item => !item.isVeg && item.brand === 'MBSquare');
+
+      grid.innerHTML = items.map(item => `
+        <div class="food-item-card" style="border-color: #fecaca;">
+          <div class="food-card-img-wrap">
+            <img src="${item.img}" alt="${escapeHtml(item.name)}" loading="lazy">
+            <div class="diet-badge-dot">
+              <span class="diet-dot nonveg"></span>
+            </div>
+            <span class="food-brand-tag" style="background:#b91c1c;">MB Square</span>
+          </div>
+          <div class="food-card-body">
+            <h4 class="food-title">${escapeHtml(item.name)}</h4>
+            <p class="food-desc">${escapeHtml(item.desc)}</p>
+            <div class="food-footer">
+              <span class="food-price" style="color:#b91c1c;">₹${item.price}</span>
+              <button class="btn-add-food btn-red" onclick="addToCafeCart('${item.id}')">
+                + Add to Cart 🍗
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Cart Management
+    function addToCafeCart(itemId) {
+      const item = FOOD_ITEMS.find(f => f.id === itemId);
+      if (!item) return;
+
+      const existing = cafeCart.find(c => c.id === itemId);
+      if (existing) {
+        existing.qty++;
+      } else {
+        cafeCart.push({
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          isVeg: item.isVeg,
+          brand: item.brand,
+          qty: 1
+        });
+      }
+      saveCafeCart();
+      showToast('Added "' + item.name + '" to dining cart!');
+    }
+
+    function saveCafeCart() {
+      localStorage.setItem('lpu_dining_cart', JSON.stringify(cafeCart));
+      updateCafeCartCount();
+    }
+
+    function updateCafeCartCount() {
+      const count = cafeCart.reduce((sum, i) => sum + i.qty, 0);
+      const el = document.getElementById('cafe-cart-count');
+      if (el) el.innerText = count;
+    }
+
+    function openCafeCartModal() {
+      const list = document.getElementById('cafe-cart-items-list');
+      list.innerHTML = '';
+
+      if (cafeCart.length === 0) {
+        list.innerHTML = '<p style="text-align:center; color:#64748b; padding:1.5rem;">Your dining cart is empty. Add your favorite meals from Uni-Mall or MB Square!</p>';
+        document.getElementById('cafe-cart-subtotal').innerText = '₹0';
+        document.getElementById('cafe-cart-total').innerText = '₹0';
+        document.getElementById('cafe-cart-modal').style.display = 'flex';
+        return;
+      }
+
+      let total = 0;
+      cafeCart.forEach((item, index) => {
+        const itemTotal = item.price * item.qty;
+        total += itemTotal;
+        const row = document.createElement('div');
+        row.style = 'display:flex; justify-content:space-between; align-items:center; padding:0.6rem 0; border-bottom:1px solid #f1f5f9;';
+        row.innerHTML = `
+          <div>
+            <div style="font-weight:700; font-size:0.9rem;">
+              <span style="font-size:0.75rem;">${item.isVeg ? '🟢' : '🔴'}</span> ${escapeHtml(item.name)}
+            </div>
+            <div style="font-size:0.78rem; color:#64748b;">${item.brand} • ₹${item.price} each</div>
+          </div>
+          <div style="display:flex; align-items:center; gap:0.5rem;">
+            <button type="button" class="btn-secondary" style="padding:0.2rem 0.5rem; font-size:0.8rem;" onclick="changeCafeCartQty(${index}, -1)">-</button>
+            <span style="font-weight:700; min-width:20px; text-align:center;">${item.qty}</span>
+            <button type="button" class="btn-secondary" style="padding:0.2rem 0.5rem; font-size:0.8rem;" onclick="changeCafeCartQty(${index}, 1)">+</button>
+            <span style="font-weight:800; min-width:60px; text-align:right;">₹${itemTotal}</span>
+          </div>
+        `;
+        list.appendChild(row);
+      });
+
+      document.getElementById('cafe-cart-subtotal').innerText = `₹${total}`;
+      document.getElementById('cafe-cart-total').innerText = `₹${total}`;
+      document.getElementById('cafe-cart-modal').style.display = 'flex';
+    }
+
+    function closeCafeCartModal() {
+      document.getElementById('cafe-cart-modal').style.display = 'none';
+    }
+
+    function changeCafeCartQty(index, delta) {
+      if (cafeCart[index]) {
+        cafeCart[index].qty += delta;
+        if (cafeCart[index].qty <= 0) {
+          cafeCart.splice(index, 1);
+        }
+      }
+      saveCafeCart();
+      openCafeCartModal();
+    }
+
+    function submitCafeOrder(e) {
+      e.preventDefault();
+      if (cafeCart.length === 0) {
+        showToast('Cart is empty', 'error');
+        return;
+      }
+
+      const student = document.getElementById('cafe-order-student').value;
+      const block = document.getElementById('cafe-order-block').value;
+      const room = document.getElementById('cafe-order-room').value;
+      const payment = document.getElementById('cafe-order-payment').value;
+      const total = cafeCart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+      const token = 'CAFE-' + Math.floor(1000 + Math.random() * 9000);
+
+      closeCafeCartModal();
+      cafeCart = [];
+      saveCafeCart();
+
+      alert(`🎉 Order Confirmed! (Token: ${token})\n\nDelivery to: ${block}, Room ${room}\nResident: ${student}\nTotal: ₹${total}\nPayment: ${payment}\n\nYour hot meal is being prepared and will be delivered in 25 minutes!`);
+      showToast(`Order Placed! Token: ${token}`);
+    }
+
+    function showToast(msg, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.style.background = type === 'error' ? '#ef4444' : '#1e293b';
+      toast.style.color = '#ffffff';
+      toast.style.padding = '0.75rem 1.25rem';
+      toast.style.borderRadius = '8px';
+      toast.style.marginBottom = '0.5rem';
+      toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+      toast.innerText = msg;
+      container.appendChild(toast);
+      setTimeout(() => toast.remove(), 3500);
+    }
+
+    function escapeHtml(str) {
+      return (str || '').replace(/[&<>"']/g, m => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      })[m]);
+    }
+
+    // Initial load
+    document.addEventListener('DOMContentLoaded', () => {
+      initTheme();
+      updateCafeCartCount();
+      renderVegItems();
+    });
+  </script>
+</body>
+</html>
